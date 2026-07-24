@@ -109,6 +109,20 @@ test("html fences run in a sandboxed iframe", async ({ page }) => {
   await expect(frame).toBeVisible();
   // The sandbox must never grant same-origin access.
   await expect(frame).toHaveAttribute("sandbox", "allow-scripts");
+
+  // The CSP wrapper makes the sandbox network-dead: fetch from inside the
+  // running snippet must be blocked, so snippets cannot phone home.
+  const frameHandle = await frame.elementHandle();
+  const innerFrame = await frameHandle?.contentFrame();
+  expect(innerFrame).toBeTruthy();
+  const fetchOutcome = await innerFrame?.evaluate(() =>
+    fetch("http://127.0.0.1:4173/buzz.svg").then(
+      () => "fetched",
+      () => "blocked",
+    ),
+  );
+  expect(fetchOutcome).toBe("blocked");
+
   await captureRow(page, "canvas", "html-sandbox-running");
 
   await row.getByRole("button", { name: "Stop" }).click();

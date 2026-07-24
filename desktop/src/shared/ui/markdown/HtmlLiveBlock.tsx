@@ -12,7 +12,25 @@ import { MarkdownCodeBlock, SyntaxHighlightedCode } from "./CodeBlock";
  * gives the snippet its own null origin: it can draw, animate, and run
  * canvas/JS, but cannot touch the app's DOM, storage, cookies, or Tauri IPC.
  * Nothing executes until the reader clicks Run.
+ *
+ * The srcdoc wrapper injects a CSP that makes the sandbox network-dead:
+ * inline script/style and data: assets work, but fetch/XHR/beacons, external
+ * scripts, and external images are all blocked — a run snippet cannot phone
+ * home or leak the viewer's IP. Relay-mediated fetch is planned separately
+ * (rim HBZ-2, sandbox-fetch-broker).
  */
+const SANDBOX_CSP = [
+  "default-src 'none'",
+  "script-src 'unsafe-inline'",
+  "style-src 'unsafe-inline'",
+  "img-src data:",
+  "media-src data:",
+  "font-src data:",
+].join("; ");
+
+function wrapSandboxDocument(code: string): string {
+  return `<!doctype html><html><head><meta http-equiv="Content-Security-Policy" content="${SANDBOX_CSP}"></head><body>${code}</body></html>`;
+}
 export function HtmlLiveBlock({
   className,
   code,
@@ -48,7 +66,7 @@ export function HtmlLiveBlock({
         </Button>
         {running && (
           <span className="text-2xs text-muted-foreground/70">
-            sandboxed — no access to the app or network identity
+            sandboxed — no app access, no network
           </span>
         )}
       </span>
@@ -57,7 +75,7 @@ export function HtmlLiveBlock({
           className="mt-1 h-80 w-full rounded-2xl border border-border/70 bg-white"
           referrerPolicy="no-referrer"
           sandbox="allow-scripts"
-          srcDoc={code}
+          srcDoc={wrapSandboxDocument(code)}
           title="Interactive HTML preview"
         />
       )}
