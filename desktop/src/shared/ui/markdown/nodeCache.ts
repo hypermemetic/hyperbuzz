@@ -14,6 +14,7 @@ import remarkChannelLinks from "@/shared/lib/remarkChannelLinks";
 import remarkCustomEmoji, {
   type CustomEmoji,
 } from "@/shared/lib/remarkCustomEmoji";
+import remarkImageLinks from "@/shared/lib/remarkImageLinks";
 import remarkMentions from "@/shared/lib/remarkMentions";
 import remarkSpoilers from "@/shared/lib/remarkSpoilers";
 
@@ -110,6 +111,7 @@ function buildMarkdownElement(input: MarkdownParseInputs): React.ReactElement {
       [remarkMath, { singleDollarTextMath: false }],
       remarkBreaks,
       remarkSpoilers,
+      remarkImageLinks,
       remarkMessageLinks,
       [remarkMentions, { mentionNames: input.mentionNames }],
       [remarkChannelLinks, { channelNames: input.channelNames }],
