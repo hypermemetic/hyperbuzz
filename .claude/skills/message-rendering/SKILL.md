@@ -47,7 +47,14 @@ The component map is cached per-variant and the variant token is part of the par
 
 No `rehype-raw`, no sanitizer, no `dangerouslySetInnerHTML` in the message path — react-markdown v10 drops raw HTML by default, and **that absence is the XSS defense**. Messages are untrusted relay content; the pipeline never executes markup. Preserve this property in any change.
 
-## Recipe: mermaid support (small, additive)
+## Implemented in hyperbuzz (branch hyper/five-features)
+
+- **Mermaid**: `shared/ui/markdown/MermaidDiagram.tsx`, intercepted in the `code` override for `language === "mermaid"`; `pre` skips its chrome for it.
+- **Live HTML**: `shared/ui/markdown/HtmlLiveBlock.tsx` — ```html fences render highlighted plus an opt-in Run toggle mounting a sandboxed iframe (`sandbox="allow-scripts"`, null origin).
+- **KaTeX**: `remark-math` (singleDollarTextMath off) + `rehype-katex` in `nodeCache.ts`; CSS imported there.
+- Schema version is now "5".
+
+## Recipe: mermaid support (small, additive — as originally assessed)
 
 1. `pnpm add mermaid` in `desktop/` (lazy-`import()` it — the dep is ~500KB).
 2. New `src/shared/ui/markdown/MermaidDiagram.tsx`: on mount `mermaid.render(id, code)` into a ref, theme via `useTheme()` (mirror `SyntaxHighlightedCode`), init with `securityLevel: "strict"`, fall back to a plain code block on parse failure, add a size guard mirroring `MAX_HIGHLIGHT_LINES`.

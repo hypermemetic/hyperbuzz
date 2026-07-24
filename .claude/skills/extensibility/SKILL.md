@@ -44,6 +44,10 @@ ACP (`buzz-acp`, `buzz-agent`, `sprig`) and MCP (`buzz-dev-mcp`) are protocol-ba
 
 No VISION doc plans a user-registerable renderer/widget system; the developer portal is 📋 (planned, unbuilt). This is greenfield.
 
+## Implemented in hyperbuzz (branch hyper/five-features)
+
+Step 1–2 of the design path below now exist: `desktop/src/features/messages/lib/messageKindRenderers.tsx` is the kind→renderer registry (`registerMessageKindRenderer` / `getMessageKindRenderer`); `MessageRow.renderBody()` does a registry lookup with the markdown fallback. Diff (40008) and huddle (48100) renderers are the first registrants. Feature-gating and user-supplied manifests remain future work.
+
 ## Design path: rim-style component registration
 
 1. **Registry module** — e.g. `desktop/src/shared/renderers/registry.ts`: `Map<number, { component, gate?: featureId }>`, shaped like `shared/features/manifest.ts`.
