@@ -1,7 +1,11 @@
 import type * as React from "react";
 import ReactMarkdown, { type Components } from "react-markdown";
+import rehypeKatex from "rehype-katex";
 import remarkBreaks from "remark-breaks";
 import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
+
+import "katex/dist/katex.min.css";
 
 import remarkMessageLinks from "@/features/messages/lib/remarkMessageLinks";
 import rehypeImageGallery from "@/shared/lib/rehypeImageGallery";
@@ -83,7 +87,12 @@ function listSegment(values: readonly string[] | undefined): string {
 function buildMarkdownElement(input: MarkdownParseInputs): React.ReactElement {
   markdownParseCount += 1;
   // biome-ignore lint/suspicious/noExplicitAny: PluggableList type not directly importable
-  const rehypePlugins: any[] = [rehypeImageGallery];
+  const rehypePlugins: any[] = [
+    rehypeImageGallery,
+    // errorColor keeps malformed TeX visibly inline instead of throwing;
+    // KaTeX output is generated markup, not relay-supplied HTML.
+    [rehypeKatex, { errorColor: "var(--destructive, #cc0000)" }],
+  ];
   if (input.searchQuery && input.searchQuery.trim().length >= 2) {
     rehypePlugins.push([rehypeSearchHighlight, { query: input.searchQuery }]);
   }
@@ -96,6 +105,9 @@ function buildMarkdownElement(input: MarkdownParseInputs): React.ReactElement {
     components: input.components,
     remarkPlugins: [
       remarkGfm,
+      // singleDollarTextMath off: chat is full of "$5 and $10" — only $$…$$
+      // and \(...\) parse as math.
+      [remarkMath, { singleDollarTextMath: false }],
       remarkBreaks,
       remarkSpoilers,
       remarkMessageLinks,

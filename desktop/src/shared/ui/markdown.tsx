@@ -60,7 +60,9 @@ import {
   SyntaxHighlightedCode,
 } from "./markdown/CodeBlock";
 import { FileCard } from "./markdown/FileCard";
+import { HtmlLiveBlock } from "./markdown/HtmlLiveBlock";
 import { InlineEmojiPopover } from "./markdown/InlineEmojiPopover";
+import { MermaidDiagram } from "./markdown/MermaidDiagram";
 import { MarkdownInput } from "./markdown/MarkdownInput";
 import {
   MediaContextMenu,
@@ -1511,6 +1513,14 @@ function createMarkdownComponents(
       if (isFencedCodeBlock || rawCode.endsWith("\n") || code.includes("\n")) {
         const language = extractLanguage(className);
 
+        if (language === "mermaid" && interactive) {
+          return <MermaidDiagram className={className} code={code} />;
+        }
+
+        if (language === "html" && interactive) {
+          return <HtmlLiveBlock className={className} code={code} />;
+        }
+
         if (language) {
           return (
             <SyntaxHighlightedCode code={code} language={language} {...props} />
@@ -1643,6 +1653,12 @@ function createMarkdownComponents(
           language = extractLanguage(child.props.className);
         }
       });
+      // Mermaid diagrams and live HTML blocks own their block chrome — the
+      // copy-button <pre> wrapper would nest their non-code UI inside a
+      // scrollable code container.
+      if (language === "mermaid" || language === "html") {
+        return <>{children}</>;
+      }
       return (
         <MarkdownCodeBlock language={language}>{children}</MarkdownCodeBlock>
       );
@@ -1799,7 +1815,7 @@ function createMarkdownComponents(
  * four instances ever exist. Module-stable maps mean cached markdown element
  * trees (see ./markdown/nodeCache.ts) never embed per-mount closures.
  */
-const MARKDOWN_COMPONENT_SCHEMA_VERSION = "4";
+const MARKDOWN_COMPONENT_SCHEMA_VERSION = "5";
 const markdownComponentsByVariant = new Map<string, MarkdownComponentSet>();
 
 type MarkdownComponentSet = { components: Components; variant: string };

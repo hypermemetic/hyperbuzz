@@ -8,7 +8,6 @@ import {
 } from "@/features/messages/lib/messageRowEquality";
 import type { TimelineMessage } from "@/features/messages/types";
 import { useKnownAgentPubkeys } from "@/features/agents/useKnownAgentPubkeys";
-import { HuddleAttachment } from "@/features/huddle/components/HuddleAttachment";
 import { MessageReactions } from "@/features/messages/ui/MessageReactions";
 import { useReactionHandler } from "@/features/messages/ui/useReactionHandler";
 import type { UserProfileLookup } from "@/features/profile/lib/identity";
@@ -23,10 +22,7 @@ import {
   threadReplyLength,
   THREAD_REPLY_LINE_WIDTH_REM,
 } from "@/features/messages/lib/threadTreeLayout";
-import {
-  KIND_HUDDLE_STARTED,
-  KIND_STREAM_MESSAGE_DIFF,
-} from "@/shared/constants/kinds";
+import { getMessageKindRenderer } from "@/features/messages/lib/messageKindRenderers";
 import { getConfigNudgeAuthorPubkey } from "@/features/messages/ui/configNudgeAuthPubkey";
 import { cn } from "@/shared/lib/cn";
 import { normalizePubkey } from "@/shared/lib/pubkey";
@@ -46,7 +42,6 @@ import { MessageTimestamp } from "./MessageTimestamp";
 import { WaveMessageAttachment } from "./WaveMessageAttachment";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
 
-const DiffMessage = React.lazy(() => import("./DiffMessage"));
 const DiffMessageExpanded = React.lazy(() => import("./DiffMessageExpanded"));
 
 export type ThreadDepthGuideAction = {
@@ -303,80 +298,58 @@ export const MessageRow = React.memo(
       message.tags?.find((tag) => tag[0] === name)?.[1];
 
     const renderBody = () => {
-      switch (message.kind) {
-        case KIND_STREAM_MESSAGE_DIFF:
-          return (
-            <React.Suspense
-              fallback={
-                <div className="p-3 text-sm text-muted-foreground">
-                  Loading diff…
-                </div>
-              }
-            >
-              <DiffMessage
-                commitSha={getTag("commit")}
-                content={message.body}
-                description={getTag("description")}
-                filePath={getTag("file")}
-                onExpand={() => {
-                  setExpandedDiffId(message.id);
-                }}
-                repoUrl={getTag("repo")}
-                truncated={getTag("truncated") === "true"}
-              />
-            </React.Suspense>
-          );
-        case KIND_HUDDLE_STARTED:
-          return (
-            <HuddleAttachment
-              channelId={channelId}
-              message={message}
-              onOpenThread={onReply}
-            />
-          );
-        default:
-          {
-            const waveMessage = parseWaveMessageContent(message.body);
-            if (waveMessage) {
-              return (
-                <WaveMessageAttachment
-                  channelId={channelId}
-                  fallbackText={waveMessage.fallbackText}
-                  huddleMemberPubkeys={huddleMemberPubkeys}
-                  huddleMemberPubkeysPending={huddleMemberPubkeysPending}
-                />
-              );
-            }
-          }
-
-          return (
-            <Markdown
-              channelNames={channelNames}
-              className={cn(
-                "max-w-full text-sm",
-                emojiOnly &&
-                  "text-4xl leading-tight [&_p]:leading-tight [&_img[data-custom-emoji]]:h-[1.45em] [&_img[data-custom-emoji]]:align-middle [&_button:has(img[data-custom-emoji])]:align-middle",
-              )}
-              // Only pass the author pubkey for agent-authored messages so
-              // config-nudge cards can authenticate the sender. Uses the
-              // raw event signer (signerPubkey), not a relay-delegated display
-              // author, because the agent itself must have signed the card.
-              configNudgeAuthorPubkey={getConfigNudgeAuthorPubkey(
-                message,
-                isKnownAgentPubkey,
-              )}
-              content={message.body}
-              customEmoji={customEmoji}
-              imetaByUrl={imetaByUrl}
-              agentMentionPubkeysByName={agentMentionPubkeysByName}
-              mentionNames={mentionNames}
-              mentionPubkeysByName={mentionPubkeysByName}
-              searchQuery={searchQuery}
-              snapshotSharedBy={snapshotSharedBy}
-              videoReviewContext={videoReviewContext}
-            />
-          );
+      const kindRenderer = getMessageKindRenderer(message.kind);
+      if (kindRenderer) {
+        return kindRenderer({
+          channelId,
+          getTag,
+          message,
+          onExpandDiff: setExpandedDiffId,
+          onOpenThread: onReply,
+        });
       }
+
+      {
+        const waveMessage = parseWaveMessageContent(message.body);
+        if (waveMessage) {
+          return (
+            <WaveMessageAttachment
+              channelId={channelId}
+              fallbackText={waveMessage.fallbackText}
+              huddleMemberPubkeys={huddleMemberPubkeys}
+              huddleMemberPubkeysPending={huddleMemberPubkeysPending}
+            />
+          );
+        }
+      }
+
+      return (
+        <Markdown
+          channelNames={channelNames}
+          className={cn(
+            "max-w-full text-sm",
+            emojiOnly &&
+              "text-4xl leading-tight [&_p]:leading-tight [&_img[data-custom-emoji]]:h-[1.45em] [&_img[data-custom-emoji]]:align-middle [&_button:has(img[data-custom-emoji])]:align-middle",
+          )}
+          // Only pass the author pubkey for agent-authored messages so
+          // config-nudge cards can authenticate the sender. Uses the
+          // raw event signer (signerPubkey), not a relay-delegated display
+          // author, because the agent itself must have signed the card.
+          configNudgeAuthorPubkey={getConfigNudgeAuthorPubkey(
+            message,
+            isKnownAgentPubkey,
+          )}
+          content={message.body}
+          customEmoji={customEmoji}
+          imetaByUrl={imetaByUrl}
+          agentMentionPubkeysByName={agentMentionPubkeysByName}
+          mentionNames={mentionNames}
+          mentionPubkeysByName={mentionPubkeysByName}
+          searchQuery={searchQuery}
+          snapshotSharedBy={snapshotSharedBy}
+          videoReviewContext={videoReviewContext}
+        />
+      );
     };
 
     const isThreadReplyLayout = layoutVariant === "thread-reply";

@@ -56,7 +56,11 @@ pub fn get_default_relay_url() -> String {
 
 #[tauri::command]
 pub fn auto_connect_default_relay_enabled() -> bool {
-    option_env!("BUZZ_DESKTOP_BUILD_AUTO_CONNECT_DEFAULT_RELAY").is_some()
+    // hyperbuzz: the default relay is a real remote host, so auto-connect is
+    // always on. The frontend still refuses to auto-connect to localhost
+    // defaults (shouldAutoConnectDefaultRelay), so local relay dev with
+    // BUZZ_RELAY_URL=ws://localhost:3000 keeps the onboarding screen.
+    true
 }
 
 #[cfg(test)]
