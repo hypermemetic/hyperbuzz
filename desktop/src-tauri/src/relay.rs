@@ -312,6 +312,48 @@ pub async fn query_relay(
     query_relay_at(state, &relay_api_base_url_with_override(state), filters).await
 }
 
+/// Response from the relay's `/sandbox-fetch` broker (hyperbuzz HBZ-2).
+#[derive(Deserialize)]
+pub struct SandboxFetchResponse {
+    pub status: u16,
+    #[serde(rename = "contentType")]
+    pub content_type: String,
+    #[serde(rename = "bodyBase64")]
+    pub body_base64: String,
+}
+
+/// Ask the relay to perform an SSRF-safe outbound GET on behalf of a sandboxed
+/// HTML embed. The relay (not this machine) makes the request, so the embed
+/// author never sees the viewer's IP, and the relay applies the allowlist /
+/// SSRF / rate-limit / audit policy. Authenticated with the user's NIP-98
+/// signature, same as the other bridge calls.
+pub async fn sandbox_fetch_via_relay(
+    state: &AppState,
+    target_url: &str,
+) -> Result<SandboxFetchResponse, String> {
+    crate::relay_admission::wait_for_rate_limit().await;
+    let api_base_url = relay_api_base_url_with_override(state);
+    let url = format!("{}/sandbox-fetch", api_base_url);
+    let body_bytes = serde_json::to_vec(&serde_json::json!({ "url": target_url }))
+        .map_err(|e| format!("request serialization failed: {e}"))?;
+    let auth = build_nip98_auth_header(&Method::POST, &url, &body_bytes, state)?;
+
+    let response = state
+        .http_client
+        .post(&url)
+        .header("Authorization", auth)
+        .header("Content-Type", "application/json")
+        .body(body_bytes)
+        .send()
+        .await
+        .map_err(|e| classify_request_error(&e))?;
+
+    if !response.status().is_success() {
+        return Err(relay_error_message(response).await);
+    }
+    parse_json_response(response).await
+}
+
 /// Like [`query_relay`] but targets an explicit HTTP API base URL instead of
 /// the workspace override. Used when a query must hit a specific relay (e.g.
 /// reconciling an agent's profile on the relay where it was published).

@@ -107,6 +107,24 @@ pub fn get_media_proxy_port(state: State<'_, AppState>) -> u16 {
         .load(std::sync::atomic::Ordering::Relaxed)
 }
 
+/// Relay-mediated fetch for sandboxed HTML embeds (hyperbuzz HBZ-2). The
+/// sandboxed iframe is network-dead (CSP `default-src 'none'`); when a snippet
+/// calls `buzzFetch(url)` the host forwards here, the relay performs the
+/// SSRF-checked GET, and the base64 body is returned to the iframe. Viewer IP
+/// never reaches the embed's origin.
+#[tauri::command]
+pub async fn sandbox_fetch(
+    url: String,
+    state: State<'_, AppState>,
+) -> Result<serde_json::Value, String> {
+    let resp = relay::sandbox_fetch_via_relay(&state, url.trim()).await?;
+    Ok(serde_json::json!({
+        "status": resp.status,
+        "contentType": resp.content_type,
+        "bodyBase64": resp.body_base64,
+    }))
+}
+
 #[tauri::command]
 pub async fn sign_event(
     kind: u16,

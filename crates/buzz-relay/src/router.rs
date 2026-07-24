@@ -71,6 +71,8 @@ pub fn build_router(state: Arc<AppState>) -> Router {
         .route("/events", post(api::bridge::submit_event))
         .route("/query", post(api::bridge::query_events))
         .route("/count", post(api::bridge::count_events))
+        // SSRF-safe outbound GET proxy for sandboxed HTML embeds (NIP-98 auth)
+        .route("/sandbox-fetch", post(api::sandbox_fetch::sandbox_fetch))
         .route(
             "/operator/communities",
             get(api::operator::list_owned_communities).post(api::operator::provision_community),
