@@ -9,10 +9,7 @@ use sha2::{Digest, Sha256};
 
 use crate::app_state::AppState;
 
-// hyperbuzz: default to the menger.sh relay so a fresh install opens
-// connected. Override with BUZZ_RELAY_URL (e.g. ws://localhost:3000 for
-// local relay development).
-const DEFAULT_RELAY_WS_URL: &str = "wss://buzz.menger.sh";
+const DEFAULT_RELAY_WS_URL: &str = "ws://localhost:3000";
 
 // A reached-but-malformed 2xx body is NOT a connectivity failure, so this
 // message must never carry the "relay unreachable:" prefix the frontend
