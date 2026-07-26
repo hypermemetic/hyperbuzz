@@ -87,7 +87,7 @@ export function CommunityIconSettingsCard() {
               src={icon}
             />
           ) : (
-            initials || "🐝"
+            initials || "▣"
           )}
         </span>
         <div className="flex items-center gap-2">
