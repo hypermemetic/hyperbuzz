@@ -211,7 +211,7 @@ test("@ trigger prioritizes channel members before runnable personas and other m
   await expect(dropdown).toBeVisible();
   await expect(dropdown.getByText("alice")).toHaveCount(0);
   await expect(dropdown.getByText("bob")).toBeVisible();
-  await expect(dropdown.getByText("Fizz")).toBeVisible();
+  await expect(dropdown.getByText("Vertex")).toBeVisible();
   await expect(dropdown.getByText("charlie")).toBeVisible();
   await expect(dropdown.getByText("outsider")).toHaveCount(0);
   const charlieRow = dropdown.locator("button", { hasText: "charlie" });
@@ -225,7 +225,7 @@ test("@ trigger prioritizes channel members before runnable personas and other m
 
   const suggestions = dropdown.locator("button");
   const suggestionText = await suggestions.allInnerTexts();
-  const fizzIndex = suggestionText.findIndex((text) => text.includes("Fizz"));
+  const fizzIndex = suggestionText.findIndex((text) => text.includes("Vertex"));
   const bobIndex = suggestionText.findIndex((text) => text.includes("bob"));
   const charlieIndex = suggestionText.findIndex((text) =>
     text.includes("charlie"),
@@ -342,7 +342,7 @@ test("blocks non-participant persona mentions in DM threads", async ({
   await expect(
     threadPanel
       .getByTestId("mention-autocomplete")
-      .locator("button", { hasText: "Fizz" }),
+      .locator("button", { hasText: "Vertex" }),
   ).toBeVisible();
   await input.press("Enter");
   await page.keyboard.type(" in this thread");
@@ -362,7 +362,7 @@ test("blocks non-participant persona mentions in DM threads", async ({
   expect(commandCount(commands, "add_channel_members")).toBe(
     commandCount(baselineCommands, "add_channel_members"),
   );
-  await expect(input).toContainText("Fizz");
+  await expect(input).toContainText("Vertex");
   await expect(page.getByTestId("chat-title")).toHaveText("bob-tyler");
 });
 
@@ -584,7 +584,7 @@ test("selecting a persona mention creates a channel agent before sending", async
   await input.fill("Ask @fi");
 
   const dropdown = autocomplete(page);
-  const fizzRow = dropdown.locator("button", { hasText: "Fizz" });
+  const fizzRow = dropdown.locator("button", { hasText: "Vertex" });
   await expect(fizzRow).toBeVisible();
   await expect(fizzRow.getByTestId("mention-agent-icon")).toBeVisible();
   await expect(fizzRow.getByText("agent")).toBeVisible();
@@ -593,10 +593,10 @@ test("selecting a persona mention creates a channel agent before sending", async
   await page.keyboard.type(" for a hand");
 
   const composerChip = input.locator(".agent-mention-highlight", {
-    hasText: "Fizz",
+    hasText: "Vertex",
   });
   await expect(composerChip).toBeVisible();
-  await expect(composerChip).toHaveText("Fizz");
+  await expect(composerChip).toHaveText("Vertex");
 
   const baselineCommands = await readCommandLog(page);
   const baselineCreateCount = commandCount(
@@ -646,9 +646,9 @@ test("selecting a persona mention creates a channel agent before sending", async
   const mentionChip = page
     .getByTestId("message-row")
     .last()
-    .locator("[data-mention].agent-mention-highlight", { hasText: "Fizz" });
+    .locator("[data-mention].agent-mention-highlight", { hasText: "Vertex" });
   await expect(mentionChip).toBeVisible();
-  await expect(mentionChip).toHaveText("Fizz");
+  await expect(mentionChip).toHaveText("Vertex");
 });
 
 test("selecting a persona mention reuses an existing persona agent", async ({
@@ -659,7 +659,7 @@ test("selecting a persona mention reuses an existing persona agent", async ({
     managedAgents: [
       {
         pubkey: REUSABLE_PERSONA_AGENT_PUBKEY,
-        name: "Fizz",
+        name: "Vertex",
         personaId: "builtin:fizz",
         status: "stopped",
       },
@@ -673,7 +673,7 @@ test("selecting a persona mention reuses an existing persona agent", async ({
   await input.fill("Ask @fi");
 
   const dropdown = autocomplete(page);
-  const fizzRow = dropdown.locator("button", { hasText: "Fizz" });
+  const fizzRow = dropdown.locator("button", { hasText: "Vertex" });
   await expect(fizzRow).toBeVisible();
   await input.press("Enter");
   await page.keyboard.type(" for a hand");
@@ -712,9 +712,9 @@ test("selecting a persona mention reuses an existing persona agent", async ({
   const mentionChip = page
     .getByTestId("message-row")
     .last()
-    .locator("[data-mention].agent-mention-highlight", { hasText: "Fizz" });
+    .locator("[data-mention].agent-mention-highlight", { hasText: "Vertex" });
   await expect(mentionChip).toBeVisible();
-  await expect(mentionChip).toHaveText("Fizz");
+  await expect(mentionChip).toHaveText("Vertex");
 });
 
 test("managed relay-profile agents with member roles use the agent composer style", async ({
@@ -1768,7 +1768,7 @@ test("agent profile popover shows its owner", async ({ page }) => {
     searchProfiles: [
       {
         pubkey: OWNED_AGENT_PROFILE_PUBKEY,
-        displayName: "Bumble",
+        displayName: "Scout",
         ownerPubkey: TEST_IDENTITIES.bob.pubkey,
         isAgent: true,
       },
@@ -1779,14 +1779,14 @@ test("agent profile popover shows its owner", async ({ page }) => {
   await expect(page.getByTestId("chat-title")).toHaveText("general");
   await waitForMockLiveSubscription(page, "general");
 
-  await emitMockMessage(page, "general", "Bumble checking in.", {
+  await emitMockMessage(page, "general", "Scout checking in.", {
     pubkey: OWNED_AGENT_PROFILE_PUBKEY,
   });
   await waitForTimelineSettled(page);
 
   const bumbleMessage = page
     .getByTestId("message-row")
-    .filter({ hasText: "Bumble checking in." })
+    .filter({ hasText: "Scout checking in." })
     .first();
   await bumbleMessage.locator("button").first().hover();
 
@@ -1808,7 +1808,7 @@ test("agent profile popover labels an agent owned by the viewer as you", async (
     searchProfiles: [
       {
         pubkey: OWNED_AGENT_PROFILE_PUBKEY,
-        displayName: "Bumble",
+        displayName: "Scout",
         ownerPubkey: MOCK_VIEWER_PUBKEY,
         isAgent: true,
       },
@@ -1819,14 +1819,14 @@ test("agent profile popover labels an agent owned by the viewer as you", async (
   await expect(page.getByTestId("chat-title")).toHaveText("general");
   await waitForMockLiveSubscription(page, "general");
 
-  await emitMockMessage(page, "general", "Bumble checking in.", {
+  await emitMockMessage(page, "general", "Scout checking in.", {
     pubkey: OWNED_AGENT_PROFILE_PUBKEY,
   });
   await waitForTimelineSettled(page);
 
   const bumbleMessage = page
     .getByTestId("message-row")
-    .filter({ hasText: "Bumble checking in." })
+    .filter({ hasText: "Scout checking in." })
     .first();
   await bumbleMessage.locator("button").first().hover();
 
@@ -1848,7 +1848,7 @@ test("agent profile popover falls back to the owner's pubkey", async ({
     searchProfiles: [
       {
         pubkey: OWNED_AGENT_PROFILE_PUBKEY,
-        displayName: "Bumble",
+        displayName: "Scout",
         ownerPubkey: CASEY_PROFILE_PUBKEY,
         isAgent: true,
       },
@@ -1859,14 +1859,14 @@ test("agent profile popover falls back to the owner's pubkey", async ({
   await expect(page.getByTestId("chat-title")).toHaveText("general");
   await waitForMockLiveSubscription(page, "general");
 
-  await emitMockMessage(page, "general", "Bumble checking in.", {
+  await emitMockMessage(page, "general", "Scout checking in.", {
     pubkey: OWNED_AGENT_PROFILE_PUBKEY,
   });
   await waitForTimelineSettled(page);
 
   const bumbleMessage = page
     .getByTestId("message-row")
-    .filter({ hasText: "Bumble checking in." })
+    .filter({ hasText: "Scout checking in." })
     .first();
   await bumbleMessage.locator("button").first().hover();
 

@@ -297,7 +297,7 @@ fn reconcile_databricks_v1_to_v2_strips_derived_keys_from_keyless_persona_defini
         dir.path(),
         &serde_json::json!([{
             // No "provider" or "model" key — this is a folded persona definition.
-            "name": "Fizz",
+            "name": "Vertex",
             "persona_id": "builtin:fizz",
             "env_vars": {
                 "BUZZ_AGENT_PROVIDER": "databricks",

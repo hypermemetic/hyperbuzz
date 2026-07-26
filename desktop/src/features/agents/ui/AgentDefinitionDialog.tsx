@@ -801,7 +801,7 @@ export function AgentDefinitionDialog({
                   disabled={isPending}
                   id="persona-display-name"
                   onChange={(event) => setDisplayName(event.target.value)}
-                  placeholder="Fizz"
+                  placeholder="Vertex"
                   value={displayName}
                 />
               </div>

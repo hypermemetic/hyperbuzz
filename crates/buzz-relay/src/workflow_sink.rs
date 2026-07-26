@@ -532,20 +532,20 @@ mod tests {
 
     #[test]
     fn ambiguous_name_wakes_no_one() {
-        // Six "Fizz" agents (real team case) with distinct pubkeys → tag none.
+        // Six "Vertex" agents (real team case) with distinct pubkeys → tag none.
         let members = vec![
-            m("Fizz", &pk('6')),
-            m("Fizz", &pk('7')),
-            m("Fizz", &pk('8')),
+            m("Vertex", &pk('6')),
+            m("Vertex", &pk('7')),
+            m("Vertex", &pk('8')),
         ];
-        assert!(resolve_mention_pubkeys("@Fizz status?", &members).is_empty());
+        assert!(resolve_mention_pubkeys("@Vertex status?", &members).is_empty());
     }
 
     #[test]
     fn duplicate_name_same_pubkey_is_not_ambiguous() {
         // Same identity listed twice (e.g. two channels) is not a conflict.
-        let members = vec![m("Fizz", &pk('6')), m("Fizz", &pk('6'))];
-        assert_eq!(resolve_mention_pubkeys("@Fizz go", &members), vec![pk('6')]);
+        let members = vec![m("Vertex", &pk('6')), m("Vertex", &pk('6'))];
+        assert_eq!(resolve_mention_pubkeys("@Vertex go", &members), vec![pk('6')]);
     }
 
     #[test]

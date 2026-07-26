@@ -29,9 +29,9 @@ function agent(name, personaId, pubkey) {
   };
 }
 
-const fizz = agent("Fizz", "builtin:fizz", "f".repeat(64));
-const honey = agent("Honey", "builtin:honey", "h".repeat(64));
-const bumble = agent("Bumble", "builtin:bumble", "b".repeat(64));
+const fizz = agent("Vertex", "builtin:fizz", "f".repeat(64));
+const honey = agent("Echo", "builtin:honey", "h".repeat(64));
+const bumble = agent("Scout", "builtin:bumble", "b".repeat(64));
 
 test("resolveWelcomeAgentSet orders agents by stable persona identity", () => {
   assert.deepEqual(resolveWelcomeAgentSet([bumble, fizz, honey]), {
@@ -48,7 +48,7 @@ test("opener uses current agent names and requests bounded simultaneous intros",
   ]);
 
   assert.match(opener, /I'm Fizzy/);
-  assert.match(opener, /@Honeybee and @Bumble/);
+  assert.match(opener, /@Honeybee and @Scout/);
   assert.doesNotMatch(opener, /@@/);
   assert.match(opener, /sentence or two/);
   assert.match(opener, /Don't start any work yet/);
@@ -150,25 +150,25 @@ test("kickoff coordinator preserves one task across rerenders and cancels on nav
 
 test("closer degrades coherently for partial and total startup failure", () => {
   assert.match(buildWelcomeKickoffCloser([]), /What can we help you build/);
-  assert.match(buildWelcomeKickoffCloser(["Honey"]), /Honey is having trouble/);
+  assert.match(buildWelcomeKickoffCloser(["Echo"]), /Echo is having trouble/);
   assert.match(
-    buildWelcomeKickoffCloser(["Honey", "Bumble"]),
-    /Honey and Bumble couldn't start/,
+    buildWelcomeKickoffCloser(["Echo", "Scout"]),
+    /Echo and Scout couldn't start/,
   );
   assert.match(
-    buildWelcomeKickoffCloser(["Honey", "Bumble"]),
+    buildWelcomeKickoffCloser(["Echo", "Scout"]),
     /I'm still here to help/,
   );
 });
 
 test("closer names teammates that did not reply before the intro wait", () => {
   assert.match(
-    buildWelcomeKickoffCloser([], ["Bumble"]),
-    /Bumble is taking longer to reply/,
+    buildWelcomeKickoffCloser([], ["Scout"]),
+    /Scout is taking longer to reply/,
   );
   assert.match(
-    buildWelcomeKickoffCloser(["Honey"], ["Bumble"]),
-    /Honey and Bumble are taking longer than expected/,
+    buildWelcomeKickoffCloser(["Echo"], ["Scout"]),
+    /Echo and Scout are taking longer than expected/,
   );
 });
 
@@ -213,11 +213,11 @@ test("opener keeps partial-readiness warm and mentions only online teammates", (
 
   assert.deepEqual(input.mentionPubkeys, [honey.pubkey]);
   assert.deepEqual(input.additionalMarkers, []);
-  assert.match(input.content, /@Honey, introduce yourself/);
+  assert.match(input.content, /@Echo, introduce yourself/);
   assert.doesNotMatch(input.content, /@@/);
   assert.doesNotMatch(
     input.content,
-    /Bumble.*trouble|couldn't start|taking longer/i,
+    /Scout.*trouble|couldn't start|taking longer/i,
   );
 });
 
@@ -236,7 +236,7 @@ test("opener greets the owner by name and tags their pubkey", () => {
     bumble.pubkey,
     owner.pubkey,
   ]);
-  assert.match(input.content, /^Hi @Morgan, I'm Fizz\./);
+  assert.match(input.content, /^Hi @Morgan, I'm Vertex\./);
   // The raw pubkey must never leak into the visible copy.
   assert.doesNotMatch(input.content, /owner-pubkey-hex/);
 });
@@ -253,7 +253,7 @@ test("opener falls back to an unnamed greeting when the display name is missing"
 
   // Still tagged for the Inbox mentions feed, just no visible greeting name.
   assert.ok(input.mentionPubkeys.includes(owner.pubkey));
-  assert.match(input.content, /^Hi, I'm Fizz\./);
+  assert.match(input.content, /^Hi, I'm Vertex\./);
   assert.doesNotMatch(input.content, /@\s/);
 });
 
@@ -266,7 +266,7 @@ test("opener greets and tags the owner even when no teammates come online", () =
 
   assert.deepEqual(input.mentionPubkeys, ["owner-pubkey-hex"]);
   assert.equal(input.additionalMarkers.length, 1);
-  assert.match(input.content, /^Hi @Morgan, I'm Fizz\./);
+  assert.match(input.content, /^Hi @Morgan, I'm Vertex\./);
 });
 
 test("opener does not duplicate the owner pubkey if already mentioned", () => {
@@ -281,13 +281,13 @@ test("opener does not duplicate the owner pubkey if already mentioned", () => {
   assert.deepEqual(input.mentionPubkeys, [honey.pubkey]);
 });
 
-test("opener degrades to one seeded Fizz message when no teammate comes online", () => {
+test("opener degrades to one seeded Vertex message when no teammate comes online", () => {
   const agentSet = { lead: fizz, teammates: [honey, bumble] };
   const input = buildWelcomeKickoffOpenerSendInput(agentSet, [], "welcome-1");
 
   assert.deepEqual(input.mentionPubkeys, []);
   assert.equal(input.additionalMarkers.length, 1);
-  assert.match(input.content, /I'm here with Honey and Bumble/);
+  assert.match(input.content, /I'm here with Echo and Scout/);
   assert.match(input.content, /What can we help you build/);
   assert.doesNotMatch(
     input.content,
@@ -333,7 +333,7 @@ test("closer classification sees replies that arrive during the final beat", asy
   const beforeBeat = classifyWelcomeKickoffResolution(events, opener, agentSet);
   assert.deepEqual(
     beforeBeat.unresolved.map((agent) => agent.name),
-    ["Honey", "Bumble"],
+    ["Echo", "Scout"],
   );
 
   const beat = waitForWelcomeKickoffBeat({ waitMs: 5 });
@@ -353,7 +353,7 @@ test("closer classification sees replies that arrive during the final beat", asy
   const afterBeat = classifyWelcomeKickoffResolution(events, opener, agentSet);
   assert.deepEqual(
     afterBeat.unresolved.map((agent) => agent.name),
-    ["Bumble"],
+    ["Scout"],
   );
 });
 
@@ -395,7 +395,7 @@ test("intro replies reach the closer classification without the user opening the
       kickoffOpener,
       agentSet,
     ).unresolved.map((agent) => agent.name),
-    ["Honey", "Bumble"],
+    ["Echo", "Scout"],
   );
 
   // With the subtree merged in, the same intros resolve the kickoff.

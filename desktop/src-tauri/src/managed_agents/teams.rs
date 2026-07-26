@@ -44,8 +44,8 @@ const BUILT_IN_TEAMS: &[BuiltInTeam] = &[BuiltInTeam {
 // merge_teams_impl.
 const RETIRED_BUILT_IN_TEAMS: &[BuiltInTeam] = &[BuiltInTeam {
     id: "builtin-team:fizz",
-    name: "Fizz",
-    description: Some("Fizz works carefully and collaboratively."),
+    name: "Vertex",
+    description: Some("Vertex works carefully and collaboratively."),
     persona_ids: &["builtin:fizz"],
 }];
 

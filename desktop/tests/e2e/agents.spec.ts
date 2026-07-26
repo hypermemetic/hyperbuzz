@@ -162,9 +162,9 @@ test("built-in personas are used from the catalog dialog", async ({ page }) => {
   await expect(page.getByTestId("agents-library-personas")).toBeVisible();
   await openPersonaCatalog(page);
   await expect(page.getByTestId("persona-catalog-dialog")).toContainText(
-    "Fizz",
+    "Vertex",
   );
-  for (const personaName of ["Fizz", "Honey", "Bumble"]) {
+  for (const personaName of ["Vertex", "Echo", "Scout"]) {
     await expect(page.getByTestId("persona-catalog-dialog")).toContainText(
       personaName,
     );
@@ -210,11 +210,11 @@ test("built-in personas are used from the catalog dialog", async ({ page }) => {
   await expect(
     page
       .locator("[data-sonner-toast]")
-      .filter({ hasText: "Selected Fizz for My Agents." }),
+      .filter({ hasText: "Selected Vertex for My Agents." }),
   ).toBeVisible();
 
   await expect(page.getByTestId("agents-library-personas")).toContainText(
-    "Fizz",
+    "Vertex",
   );
   await expect(
     page.getByTestId("persona-catalog-use-agent-target-builtin:fizz"),
@@ -240,17 +240,17 @@ test("built-in persona edits persist", async ({ page }) => {
   await gotoApp(page);
   await page.getByTestId("open-agents-view").click();
 
-  await page.getByLabel("Open actions for Fizz").click();
+  await page.getByLabel("Open actions for Vertex").click();
   await page.getByRole("menuitem", { name: "Edit" }).click();
 
   const dialog = page.getByTestId("persona-dialog");
-  await dialog.getByLabel("Agent name").fill("My Fizz");
+  await dialog.getByLabel("Agent name").fill("My Vertex");
   await dialog.getByLabel("Agent instruction").fill("User-edited instructions");
   await dialog.getByRole("button", { name: "Save changes" }).click();
 
   await expect(dialog).toHaveCount(0);
   await expect(page.getByTestId("agents-library-personas")).toContainText(
-    "My Fizz",
+    "My Vertex",
   );
   const personas = await invokeTauri<
     Array<{ id: string; display_name: string; system_prompt: string }>
@@ -258,7 +258,7 @@ test("built-in persona edits persist", async ({ page }) => {
   expect(
     personas.find((persona) => persona.id === "builtin:fizz"),
   ).toMatchObject({
-    display_name: "My Fizz",
+    display_name: "My Vertex",
     system_prompt: "User-edited instructions",
   });
 });
@@ -316,7 +316,7 @@ test("agent catalog can reopen from the populated library header", async ({
   await selectCatalogPersona(page, "builtin:fizz");
   await useCatalogPersona(page, "builtin:fizz");
   await expect(page.getByTestId("agents-library-personas")).toContainText(
-    "Fizz",
+    "Vertex",
   );
 
   await page.keyboard.press("Escape");
@@ -343,7 +343,7 @@ test("agent catalog chooser order stays stable when selection changes", async ({
   await expect(
     page
       .locator("[data-sonner-toast]")
-      .filter({ hasText: "Selected Fizz for My Agents." }),
+      .filter({ hasText: "Selected Vertex for My Agents." }),
   ).toBeVisible();
 
   expect(await getCatalogOrder(page)).toEqual(before);
@@ -360,13 +360,13 @@ test("catalog detail pane shows the full persona details", async ({ page }) => {
   );
 
   await expect(page.getByTestId("persona-catalog-detail-pane")).toContainText(
-    "Fizz",
+    "Vertex",
   );
   await expect(
     page.getByTestId("persona-catalog-detail-pane"),
   ).not.toContainText("Added by You");
   await expect(page.getByTestId("persona-catalog-detail-pane")).toContainText(
-    "You are Fizz.",
+    "You are Vertex.",
   );
   await expect(page.getByTestId("persona-catalog-detail-pane")).toContainText(
     "Built-in agent",
@@ -382,13 +382,13 @@ test("catalog detail pane shows the full persona details", async ({ page }) => {
   );
   await expect(useAgentTarget).toHaveAttribute(
     "aria-label",
-    "Add Fizz from Agent Catalog",
+    "Add Vertex from Agent Catalog",
   );
   await expect(useAgentTarget).toHaveText("Add agent");
 
   await useAgentTarget.click();
   await expect(page.getByTestId("agents-library-personas")).toContainText(
-    "Fizz",
+    "Vertex",
   );
 });
 
@@ -1572,7 +1572,7 @@ test("inactive built-ins cannot be used to create teams", async ({ page }) => {
   });
 
   expect(error).toBe(
-    "Honey is not in My Agents. Choose it from Agent Catalog first.",
+    "Echo is not in My Agents. Choose it from Agent Catalog first.",
   );
 });
 
@@ -1592,13 +1592,13 @@ test("built-in removal failures show up from My Agents", async ({ page }) => {
   });
 
   await page.keyboard.press("Escape");
-  await page.getByLabel("Open actions for Honey").click();
+  await page.getByLabel("Open actions for Echo").click();
   await page.getByRole("menuitem", { name: "Delete" }).click();
 
   await expect(
     page
       .locator("[data-sonner-toast]")
-      .filter({ hasText: "Honey is still referenced by a team." }),
+      .filter({ hasText: "Echo is still referenced by a team." }),
   ).toBeVisible();
 });
 

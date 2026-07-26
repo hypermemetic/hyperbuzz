@@ -20,7 +20,7 @@ import type {
 } from "@/shared/api/types";
 import { normalizePubkey } from "@/shared/lib/pubkey";
 
-export const WELCOME_GUIDE_AGENT_NAME = "Fizz";
+export const WELCOME_GUIDE_AGENT_NAME = "Vertex";
 export const WELCOME_GUIDE_PERSONA_ID = "builtin:fizz";
 export const WELCOME_TEAM_ID = "builtin-team:welcome";
 export const WELCOME_GUIDE_INTRO_MARKER = "buzz-welcome-intro.v1";
@@ -28,7 +28,7 @@ const LEGACY_WELCOME_GUIDE_AGENT_NAME = "Kit";
 export const LEGACY_WELCOME_GUIDE_SYSTEM_PROMPT =
   "You are Kit, Sprout's friendly welcome guide. Help new users understand the community, channels, messages, and agents. Keep introductions concise, practical, and warm.";
 export const WELCOME_GUIDE_INTRO_MESSAGE =
-  "Hi, I'm Fizz. Welcome to Hyperbuzz.\n\nI can help you get oriented, answer questions, and make the first few steps feel less mysterious.\n\nFeel free to ask me what else you can do in Hyperbuzz, or just talk through what you want to build.";
+  "Hi, I'm Vertex. Welcome to Hyperbuzz.\n\nI can help you get oriented, answer questions, and make the first few steps feel less mysterious.\n\nFeel free to ask me what else you can do in Hyperbuzz, or just talk through what you want to build.";
 
 export type WelcomeTeamRole = "lead" | "teammate";
 
@@ -40,9 +40,9 @@ export type WelcomeTeamStarterDefinition = Readonly<{
 
 /** Stable identities used to provision the Rust-seeded Welcome Team. */
 export const WELCOME_TEAM_STARTERS = [
-  { name: "Fizz", personaId: "builtin:fizz", role: "lead" },
-  { name: "Honey", personaId: "builtin:honey", role: "teammate" },
-  { name: "Bumble", personaId: "builtin:bumble", role: "teammate" },
+  { name: "Vertex", personaId: "builtin:fizz", role: "lead" },
+  { name: "Echo", personaId: "builtin:honey", role: "teammate" },
+  { name: "Scout", personaId: "builtin:bumble", role: "teammate" },
 ] as const satisfies readonly WelcomeTeamStarterDefinition[];
 
 export type WelcomeTeamAgents = [ManagedAgent, ManagedAgent, ManagedAgent];
@@ -136,7 +136,7 @@ export async function getWelcomeTeamAgentPubkeys(relayUrl?: string | null) {
     .map((agent) => agent.pubkey);
 }
 
-/** Legacy Fizz/Kit lookup retained for existing channel reuse checks. */
+/** Legacy Vertex/Kit lookup retained for existing channel reuse checks. */
 export async function getWelcomeGuideAgentPubkeys(relayUrl?: string | null) {
   return (await listManagedAgents())
     .filter(

@@ -43,7 +43,7 @@ fn merge_personas_adds_missing_built_ins() {
         .iter()
         .map(|record| record.display_name.as_str())
         .collect();
-    assert_eq!(display_names, vec!["Fizz", "Honey", "Bumble"]);
+    assert_eq!(display_names, vec!["Vertex", "Echo", "Scout"]);
     let active_ids: Vec<&str> = records
         .iter()
         .filter(|record| record.is_active)
@@ -66,7 +66,7 @@ fn merge_personas_preserves_custom_records() {
 
 #[test]
 fn merge_personas_preserves_builtin_edits() {
-    let mut edited_builtin = custom_persona("builtin:fizz", "My Fizz");
+    let mut edited_builtin = custom_persona("builtin:fizz", "My Vertex");
     edited_builtin.is_builtin = true;
     edited_builtin.is_active = true;
     edited_builtin.system_prompt = "User-edited instructions".to_string();
@@ -90,7 +90,7 @@ fn merge_personas_preserves_builtin_edits() {
 
 #[test]
 fn merge_personas_restores_builtin_marker_without_resetting_edits() {
-    let mut edited_builtin = custom_persona("builtin:fizz", "My Fizz");
+    let mut edited_builtin = custom_persona("builtin:fizz", "My Vertex");
     edited_builtin.is_builtin = false;
 
     let (records, changed) = merge_personas(vec![edited_builtin], "2026-03-19T00:00:00Z");
@@ -101,7 +101,7 @@ fn merge_personas_restores_builtin_marker_without_resetting_edits() {
         .find(|record| record.id == "builtin:fizz")
         .expect("fizz built-in should exist");
     assert!(fizz.is_builtin);
-    assert_eq!(fizz.display_name, "My Fizz");
+    assert_eq!(fizz.display_name, "My Vertex");
 }
 
 #[test]
@@ -165,7 +165,7 @@ fn ensure_persona_is_active_rejects_missing_personas() {
 
 #[test]
 fn ensure_persona_is_active_rejects_inactive_personas() {
-    let mut persona = custom_persona("builtin:fizz", "Fizz");
+    let mut persona = custom_persona("builtin:fizz", "Vertex");
     persona.is_builtin = true;
     persona.is_active = false;
 
@@ -173,7 +173,7 @@ fn ensure_persona_is_active_rejects_inactive_personas() {
 
     assert_eq!(
         err,
-        "Fizz is not in My Agents. Choose it from Agent Catalog first."
+        "Vertex is not in My Agents. Choose it from Agent Catalog first."
     );
 }
 
@@ -205,33 +205,33 @@ fn validate_persona_activation_change_rejects_non_builtins() {
 
 #[test]
 fn validate_persona_activation_change_rejects_managed_agent_references() {
-    let mut persona = custom_persona("builtin:fizz", "Fizz");
+    let mut persona = custom_persona("builtin:fizz", "Vertex");
     persona.is_builtin = true;
 
     let err = validate_persona_activation_change(&persona, false, true, false).unwrap_err();
 
     assert_eq!(
         err,
-        "Fizz is still assigned to a managed agent. Remove or reassign those agents first."
+        "Vertex is still assigned to a managed agent. Remove or reassign those agents first."
     );
 }
 
 #[test]
 fn validate_persona_activation_change_rejects_team_references() {
-    let mut persona = custom_persona("builtin:fizz", "Fizz");
+    let mut persona = custom_persona("builtin:fizz", "Vertex");
     persona.is_builtin = true;
 
     let err = validate_persona_activation_change(&persona, false, false, true).unwrap_err();
 
     assert_eq!(
         err,
-        "Fizz is still referenced by a team. Remove it from those teams first."
+        "Vertex is still referenced by a team. Remove it from those teams first."
     );
 }
 
 #[test]
 fn validate_persona_activation_change_allows_safe_builtin_updates() {
-    let mut persona = custom_persona("builtin:fizz", "Fizz");
+    let mut persona = custom_persona("builtin:fizz", "Vertex");
     persona.is_builtin = true;
 
     assert!(validate_persona_activation_change(&persona, true, false, false).is_ok());
@@ -240,7 +240,7 @@ fn validate_persona_activation_change_allows_safe_builtin_updates() {
 
 #[test]
 fn validate_persona_deletion_rejects_builtins() {
-    let mut persona = custom_persona("builtin:fizz", "Fizz");
+    let mut persona = custom_persona("builtin:fizz", "Vertex");
     persona.is_builtin = true;
 
     let err = validate_persona_deletion(&persona, false).unwrap_err();
@@ -272,7 +272,7 @@ fn validate_persona_deletion_allows_safe_custom_personas() {
 #[test]
 fn migrate_retires_unmodified_personas() {
     let now = "2026-04-01T00:00:00Z";
-    // Simulate a store from before the Fizz transition: all 6
+    // Simulate a store from before the Vertex transition: all 6
     // retired personas with original system prompts.
     let mut stored: Vec<AgentDefinition> = RETIRED_PERSONAS
         .iter()
@@ -375,11 +375,11 @@ fn migrate_is_idempotent() {
     assert!(!migrate_retired_personas(&mut stored_pre_demotion, now));
 }
 
-// ── Fizz default harness ──────────────────────────────────────────────────────
+// ── Vertex default harness ──────────────────────────────────────────────────────
 
 #[test]
 fn fizz_builtin_has_no_pinned_runtime() {
-    // The Fizz built-in must not hard-pin a runtime so it inherits the
+    // The Vertex built-in must not hard-pin a runtime so it inherits the
     // bundled default (buzz-agent) rather than requiring goose on PATH.
     let records = built_in_persona_records("2026-01-01T00:00:00Z");
     let fizz = records
@@ -388,7 +388,7 @@ fn fizz_builtin_has_no_pinned_runtime() {
         .expect("builtin:fizz must exist");
     assert_eq!(
         fizz.runtime, None,
-        "Fizz built-in must not pin a runtime — it should inherit the default"
+        "Vertex built-in must not pin a runtime — it should inherit the default"
     );
 }
 
@@ -400,11 +400,11 @@ fn fizz_builtin_resolves_to_buzz_agent() {
     assert_eq!(
         effective_agent_command(Some("builtin:fizz"), &records, None),
         default_agent_command(),
-        "Fizz must resolve to the bundled default harness, not goose"
+        "Vertex must resolve to the bundled default harness, not goose"
     );
     assert_eq!(
         effective_agent_command(Some("builtin:fizz"), &records, None),
         "buzz-agent",
-        "Fizz must resolve to buzz-agent specifically"
+        "Vertex must resolve to buzz-agent specifically"
     );
 }

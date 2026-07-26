@@ -69,7 +69,7 @@ test("pickWelcomeGuideAgent reuses a legacy Kit guide", () => {
   assert.equal(pickWelcomeGuideAgent([legacyKit]), legacyKit);
 });
 
-test("pickWelcomeGuideAgent prefers a running legacy guide over stopped builtin Fizz", () => {
+test("pickWelcomeGuideAgent prefers a running legacy guide over stopped builtin Vertex", () => {
   const stoppedBuiltinFizz = makeAgent({
     pubkey: PUB_A,
     personaId: WELCOME_GUIDE_PERSONA_ID,
@@ -102,7 +102,7 @@ test("pickWelcomeGuideAgent ignores non-Kit agents with the legacy prompt", () =
   assert.equal(pickWelcomeGuideAgent([nonKit, fizz]), fizz);
 });
 
-test("pickWelcomeGuideAgentForRelay ignores Fizz agents from other communities", () => {
+test("pickWelcomeGuideAgentForRelay ignores Vertex agents from other communities", () => {
   const otherCommunityFizz = makeAgent({
     pubkey: PUB_A,
     personaId: WELCOME_GUIDE_PERSONA_ID,
@@ -125,7 +125,7 @@ test("pickWelcomeGuideAgentForRelay ignores Fizz agents from other communities",
   );
 });
 
-test("pickWelcomeGuideAgentForRelay returns null when Fizz only exists in another community", () => {
+test("pickWelcomeGuideAgentForRelay returns null when Vertex only exists in another community", () => {
   const otherCommunityFizz = makeAgent({
     pubkey: PUB_A,
     personaId: WELCOME_GUIDE_PERSONA_ID,
@@ -222,7 +222,7 @@ test("existing Welcome starter rematerializes runtime-specific fields atomically
 
   assert.deepEqual(
     welcomeStarterRuntimeUpdate(existing, {
-      name: "Fizz",
+      name: "Vertex",
       agentCommand: "codex-acp",
       agentArgs: ["--new"],
       mcpCommand: "buzz-dev-mcp",
@@ -252,7 +252,7 @@ test("existing Welcome starter clears stale model and provider for Claude", () =
 
   assert.deepEqual(
     welcomeStarterRuntimeUpdate(existing, {
-      name: "Fizz",
+      name: "Vertex",
       agentCommand: "claude-agent-acp",
       agentArgs: [],
       mcpCommand: "",
@@ -278,7 +278,7 @@ test("existing Welcome starter needs no update when runtime already matches", ()
 
   assert.equal(
     welcomeStarterRuntimeUpdate(existing, {
-      name: "Fizz",
+      name: "Vertex",
       agentCommand: "codex-acp",
       agentArgs: ["--same"],
       mcpCommand: "buzz-dev-mcp",
@@ -292,9 +292,9 @@ test("existing Welcome starter needs no update when runtime already matches", ()
 test("welcome team starter definitions and role identities are stable", () => {
   assert.equal(WELCOME_TEAM_ID, "builtin-team:welcome");
   assert.deepEqual(WELCOME_TEAM_STARTERS, [
-    { name: "Fizz", personaId: "builtin:fizz", role: "lead" },
-    { name: "Honey", personaId: "builtin:honey", role: "teammate" },
-    { name: "Bumble", personaId: "builtin:bumble", role: "teammate" },
+    { name: "Vertex", personaId: "builtin:fizz", role: "lead" },
+    { name: "Echo", personaId: "builtin:honey", role: "teammate" },
+    { name: "Scout", personaId: "builtin:bumble", role: "teammate" },
   ]);
 });
 
@@ -314,7 +314,7 @@ test("starter matching ignores user agents with a Welcome persona", () => {
 test("starter matching uses persona identity rather than display name", () => {
   const honey = WELCOME_TEAM_STARTERS[1];
   const renamedHoney = makeAgent({
-    name: "Honey the Helper",
+    name: "Echo the Helper",
     personaId: honey.personaId,
   });
   const nameOnlyHoney = makeAgent({ name: honey.name, pubkey: PUB_B });

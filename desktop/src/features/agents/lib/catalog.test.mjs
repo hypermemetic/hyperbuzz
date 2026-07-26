@@ -27,7 +27,7 @@ function createPersona(id, displayName, overrides = {}) {
 
 test("getCatalogPersonas keeps built-ins visible whether selected or not", () => {
   const personas = [
-    createPersona("builtin:fizz", "Fizz", { isBuiltIn: true, isActive: false }),
+    createPersona("builtin:fizz", "Vertex", { isBuiltIn: true, isActive: false }),
     createPersona("custom:builder", "Builder"),
   ];
 
@@ -39,7 +39,7 @@ test("getCatalogPersonas keeps built-ins visible whether selected or not", () =>
 
 test("getCatalogSelectionState keeps built-in selection rules in one place", () => {
   const personas = [
-    createPersona("builtin:fizz", "Fizz", { isBuiltIn: true, isActive: true }),
+    createPersona("builtin:fizz", "Vertex", { isBuiltIn: true, isActive: true }),
     createPersona("custom:builder", "Builder"),
   ];
 
@@ -61,14 +61,14 @@ test("getCatalogSelectionState keeps built-in selection rules in one place", () 
 
 test("getCatalogPersonas keeps chooser order stable when selection changes", () => {
   const inactive = [
-    createPersona("builtin:fizz", "Fizz", { isBuiltIn: true, isActive: false }),
+    createPersona("builtin:fizz", "Vertex", { isBuiltIn: true, isActive: false }),
     createPersona("builtin:reviewer", "Reviewer", {
       isBuiltIn: true,
       isActive: true,
     }),
   ];
   const active = [
-    createPersona("builtin:fizz", "Fizz", { isBuiltIn: true, isActive: true }),
+    createPersona("builtin:fizz", "Vertex", { isBuiltIn: true, isActive: true }),
     createPersona("builtin:reviewer", "Reviewer", {
       isBuiltIn: true,
       isActive: false,
@@ -84,7 +84,7 @@ test("getCatalogPersonas keeps chooser order stable when selection changes", () 
 test("isCatalogPersonaSelected treats active catalog personas as selected", () => {
   assert.equal(
     isCatalogPersonaSelected(
-      createPersona("builtin:fizz", "Fizz", {
+      createPersona("builtin:fizz", "Vertex", {
         isBuiltIn: true,
         isActive: true,
       }),
@@ -93,7 +93,7 @@ test("isCatalogPersonaSelected treats active catalog personas as selected", () =
   );
   assert.equal(
     isCatalogPersonaSelected(
-      createPersona("builtin:fizz", "Fizz", {
+      createPersona("builtin:fizz", "Vertex", {
         isBuiltIn: true,
         isActive: false,
       }),
@@ -108,19 +108,19 @@ test("isCatalogPersonaSelected treats active catalog personas as selected", () =
 
 test("getPersonaLabelsById keeps every returned persona addressable", () => {
   const personas = [
-    createPersona("builtin:fizz", "Fizz", { isBuiltIn: true, isActive: false }),
+    createPersona("builtin:fizz", "Vertex", { isBuiltIn: true, isActive: false }),
     createPersona("custom:builder", "Builder"),
   ];
 
   assert.deepEqual(getPersonaLabelsById(personas), {
-    "builtin:fizz": "Fizz",
+    "builtin:fizz": "Vertex",
     "custom:builder": "Builder",
   });
 });
 
 test("getPersonaLibraryState keeps the working library and full catalog in one place", () => {
   const personas = [
-    createPersona("builtin:fizz", "Fizz", { isBuiltIn: true, isActive: true }),
+    createPersona("builtin:fizz", "Vertex", { isBuiltIn: true, isActive: true }),
     createPersona("custom:builder", "Builder"),
   ];
 
@@ -134,7 +134,7 @@ test("getPersonaLibraryState keeps the working library and full catalog in one p
     state.catalogPersonas.map((persona) => persona.id),
     ["builtin:fizz"],
   );
-  assert.equal(state.personaLabelsById["builtin:fizz"], "Fizz");
+  assert.equal(state.personaLabelsById["builtin:fizz"], "Vertex");
 });
 
 test("getLibraryPersonas keeps active custom personas even when catalog entries are similar", () => {

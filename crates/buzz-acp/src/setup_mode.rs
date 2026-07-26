@@ -675,7 +675,7 @@ mod tests {
     #[test]
     fn setup_payload_deserializes_correctly() {
         let json = r#"{
-            "agent_name": "Fizz",
+            "agent_name": "Vertex",
             "agent_pubkey": "aabbccddeeff0011",
             "requirements": [
                 {"surface": "normalized_field", "field": "provider"},
@@ -683,7 +683,7 @@ mod tests {
             ]
         }"#;
         let payload: SetupPayload = serde_json::from_str(json).unwrap();
-        assert_eq!(payload.agent_name, "Fizz");
+        assert_eq!(payload.agent_name, "Vertex");
         assert_eq!(payload.requirements.len(), 2);
     }
 
@@ -702,7 +702,7 @@ mod tests {
     #[test]
     fn nudge_body_names_all_requirements() {
         let payload = SetupPayload {
-            agent_name: "Fizz".to_string(),
+            agent_name: "Vertex".to_string(),
             agent_pubkey: "test".to_string(),
             requirements: vec![
                 RequirementPayload::NormalizedField {
@@ -722,7 +722,7 @@ mod tests {
             body.contains("ANTHROPIC_API_KEY"),
             "nudge body should mention the missing env key"
         );
-        assert!(body.contains("Fizz"), "nudge body should name the agent");
+        assert!(body.contains("Vertex"), "nudge body should name the agent");
     }
 
     #[test]
@@ -801,12 +801,12 @@ mod tests {
     #[test]
     fn nudge_body_empty_requirements_falls_back_to_generic() {
         let payload = SetupPayload {
-            agent_name: "Fizz".to_string(),
+            agent_name: "Vertex".to_string(),
             agent_pubkey: "test".to_string(),
             requirements: vec![],
         };
         let body = payload.nudge_body();
-        assert!(body.contains("Fizz"));
+        assert!(body.contains("Vertex"));
         assert!(body.contains("needs configuration"));
     }
 
@@ -876,7 +876,7 @@ mod tests {
     fn nudge_body_all_buzz_managed_retains_original_footer() {
         // Pure Buzz-managed requirements → original "Open Edit Agent" footer unchanged.
         let payload = SetupPayload {
-            agent_name: "Fizz".to_string(),
+            agent_name: "Vertex".to_string(),
             agent_pubkey: "test".to_string(),
             requirements: vec![RequirementPayload::EnvKey {
                 key: "ANTHROPIC_API_KEY".to_string(),
@@ -896,7 +896,7 @@ mod tests {
         // The body must end with a ```buzz:config-nudge fence so the desktop
         // can detect and strip it before rendering the ConfigNudgeCard.
         let payload = SetupPayload {
-            agent_name: "Fizz".to_string(),
+            agent_name: "Vertex".to_string(),
             agent_pubkey: "test".to_string(),
             requirements: vec![RequirementPayload::EnvKey {
                 key: "ANTHROPIC_API_KEY".to_string(),
@@ -961,7 +961,7 @@ mod tests {
         // Existing prose checks must pass — the sentinel is APPENDED, not a
         // replacement, so all prior `body.contains(...)` invariants hold.
         let payload = SetupPayload {
-            agent_name: "Fizz".to_string(),
+            agent_name: "Vertex".to_string(),
             agent_pubkey: "test".to_string(),
             requirements: vec![
                 RequirementPayload::NormalizedField {
@@ -978,7 +978,7 @@ mod tests {
             body.contains("ANTHROPIC_API_KEY"),
             "prose must name the key"
         );
-        assert!(body.contains("Fizz"), "prose must name the agent");
+        assert!(body.contains("Vertex"), "prose must name the agent");
         // Sentinel is also present.
         assert!(
             body.contains("```buzz:config-nudge"),

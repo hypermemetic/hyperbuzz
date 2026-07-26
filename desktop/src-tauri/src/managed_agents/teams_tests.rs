@@ -152,7 +152,7 @@ fn merge_teams_repromotes_existing_builtin_marked_as_custom() {
 
 #[test]
 fn validate_team_deletion_rejects_built_ins() {
-    let mut built_in = team("builtin-team:fizz", "Fizz");
+    let mut built_in = team("builtin-team:fizz", "Vertex");
     built_in.is_builtin = true;
 
     let err = validate_team_deletion(&built_in).unwrap_err();
@@ -263,12 +263,12 @@ fn agents_referencing_team_empty_when_no_matches() {
 
 #[test]
 fn migration_pristine_fizz_is_purged() {
-    // A stored record that exactly matches the retired Fizz seed is dropped
+    // A stored record that exactly matches the retired Vertex seed is dropped
     // on load — the user never touched it, so nothing is lost.
     let pristine = TeamRecord {
         id: "builtin-team:fizz".to_string(),
-        name: "Fizz".to_string(),
-        description: Some("Fizz works carefully and collaboratively.".to_string()),
+        name: "Vertex".to_string(),
+        description: Some("Vertex works carefully and collaboratively.".to_string()),
         instructions: None,
         persona_ids: vec!["builtin:fizz".to_string()],
         is_builtin: true,
@@ -288,12 +288,12 @@ fn migration_pristine_fizz_is_purged() {
 
 #[test]
 fn migration_customized_fizz_is_demoted_to_user_team() {
-    // A stored Fizz that was renamed (or had a persona added) is retained
+    // A stored Vertex that was renamed (or had a persona added) is retained
     // but demoted to a user-owned team so the user can edit or delete it.
     let customized = TeamRecord {
         id: "builtin-team:fizz".to_string(),
-        name: "Fizz (customized)".to_string(),
-        description: Some("Fizz works carefully and collaboratively.".to_string()),
+        name: "Vertex (customized)".to_string(),
+        description: Some("Vertex works carefully and collaboratively.".to_string()),
         instructions: None,
         persona_ids: vec!["builtin:fizz".to_string(), "extra:persona".to_string()],
         is_builtin: true,

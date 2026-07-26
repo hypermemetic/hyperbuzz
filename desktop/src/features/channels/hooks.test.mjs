@@ -66,7 +66,7 @@ test("upsertCachedChannelMember_doesNotDecorateImmutableDmSource", () => {
 
   const channels = upsertCachedChannelMember([openedDm], openedDm.id, {
     membershipAdded: true,
-    name: "Fizz",
+    name: "Vertex",
     pubkey: fizzPubkey,
   });
   assert.deepEqual(channels, [openedDm]);
@@ -78,7 +78,7 @@ test("upsertCachedChannelMember_recordsStreamMemberBeforeRefetch", () => {
 
   const channels = upsertCachedChannelMember([channel], channel.id, {
     membershipAdded: true,
-    name: "Fizz",
+    name: "Vertex",
     pubkey: fizzPubkey,
   });
 
@@ -96,7 +96,7 @@ test("reconcileRefreshedCachedChannel_restoresOpenedDmAfterStaleRefresh", () => 
   });
   const expandedDm = makeChannel("expanded-dm", "Group DM", "dm", {
     participantPubkeys: [charliePubkey, ownerPubkey, fizzPubkey],
-    participants: ["charlie", "owner", "Fizz"],
+    participants: ["charlie", "owner", "Vertex"],
   });
 
   const reconciled = reconcileRefreshedCachedChannel([openedDm], expandedDm);

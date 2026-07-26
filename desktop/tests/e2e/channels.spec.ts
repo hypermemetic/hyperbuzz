@@ -670,7 +670,7 @@ test("creates the DM before preparing a persona mention", async ({ page }) => {
     page
       .getByTestId("message-composer")
       .getByTestId("mention-autocomplete")
-      .locator("button", { hasText: "Fizz" }),
+      .locator("button", { hasText: "Vertex" }),
   ).toBeVisible();
   await input.press("Enter");
   await page.keyboard.type(" for a hand");
@@ -699,7 +699,7 @@ test("creates the DM before preparing a persona mention", async ({ page }) => {
     )
     .toBeGreaterThan(baselineCreateCount);
   await expect(page.getByTestId("chat-title")).toContainText("charlie");
-  await expect(page.getByTestId("chat-title")).toContainText("Fizz");
+  await expect(page.getByTestId("chat-title")).toContainText("Vertex");
 
   const sendCommands = (await readCommandLog(page)).slice(
     baselineCommands.length,
@@ -755,7 +755,7 @@ test("creates the DM before preparing a persona mention", async ({ page }) => {
     page
       .getByTestId("message-row")
       .last()
-      .locator("[data-mention].agent-mention-highlight", { hasText: "Fizz" }),
+      .locator("[data-mention].agent-mention-highlight", { hasText: "Vertex" }),
   ).toBeVisible();
 });
 
@@ -780,7 +780,7 @@ test("routes an agent mention from an existing DM to the expanded conversation",
     page
       .getByTestId("message-composer")
       .getByTestId("mention-autocomplete")
-      .locator("button", { hasText: "Fizz" }),
+      .locator("button", { hasText: "Vertex" }),
   ).toBeVisible();
   await input.press("Enter");
   await page.keyboard.type(" in this DM");
@@ -796,8 +796,8 @@ test("routes an agent mention from an existing DM to the expanded conversation",
     page.locator("[data-active='true'][data-channel-id]"),
   ).toHaveAttribute("data-channel-id", sentChannelId ?? "");
   await expect(page.getByTestId("chat-title")).toContainText("alice");
-  await expect(page.getByTestId("chat-title")).toContainText("Fizz");
-  await expect(sourceDm).not.toContainText("Fizz");
+  await expect(page.getByTestId("chat-title")).toContainText("Vertex");
+  await expect(sourceDm).not.toContainText("Vertex");
   const sendCommands = (await readCommandPayloadLog(page)).slice(
     baselineCommands.length,
   );
@@ -896,7 +896,7 @@ test("does not reroute an expanded DM after the user navigates away", async ({
     page
       .getByTestId("message-composer")
       .getByTestId("mention-autocomplete")
-      .locator("button", { hasText: "Fizz" }),
+      .locator("button", { hasText: "Vertex" }),
   ).toBeVisible();
   await input.press("Enter");
   await page.keyboard.type(" while I leave");
@@ -928,7 +928,7 @@ test("does not reroute an expanded DM after the channel pane unmounts", async ({
     page
       .getByTestId("message-composer")
       .getByTestId("mention-autocomplete")
-      .locator("button", { hasText: "Fizz" }),
+      .locator("button", { hasText: "Vertex" }),
   ).toBeVisible();
   await input.press("Enter");
   await page.keyboard.type(" while I open settings");
@@ -965,14 +965,14 @@ test("drops an expanded DM after the first message fails", async ({ page }) => {
     page
       .getByTestId("message-composer")
       .getByTestId("mention-autocomplete")
-      .locator("button", { hasText: "Fizz" }),
+      .locator("button", { hasText: "Vertex" }),
   ).toBeVisible();
   await input.press("Enter");
   await page.keyboard.type(" for a hand");
   await page.getByTestId("send-message").click();
 
   await expect(page.getByText(sendError)).toBeVisible();
-  await expect(input).toContainText("Fizz");
+  await expect(input).toContainText("Vertex");
 
   const commandsAfterFailure = await readCommandPayloadLog(page);
   const failedSendChannelId = await readOutgoingChannelId(page, "for a hand");
@@ -1053,7 +1053,7 @@ test("drops an expanded DM after agent startup fails", async ({ page }) => {
     page
       .getByTestId("message-composer")
       .getByTestId("mention-autocomplete")
-      .locator("button", { hasText: "Fizz" }),
+      .locator("button", { hasText: "Vertex" }),
   ).toBeVisible();
   await input.press("Enter");
   await page.keyboard.type(" before startup fails");
@@ -1062,7 +1062,7 @@ test("drops an expanded DM after agent startup fails", async ({ page }) => {
   await expect(
     page.getByText(startError, { exact: false }).first(),
   ).toBeVisible();
-  await expect(input).toContainText("Fizz");
+  await expect(input).toContainText("Vertex");
 
   const commandsAfterFailure = await readCommandPayloadLog(page);
   const openDmCallsAfterFailure = commandsAfterFailure.filter(
@@ -1096,7 +1096,7 @@ test("drops an expanded DM after agent startup fails", async ({ page }) => {
   expect(
     (retryOpenDm?.payload as { pubkeys?: string[] } | undefined)?.pubkeys,
   ).toEqual([TEST_IDENTITIES.charlie.pubkey]);
-  await expect(page.getByTestId("chat-title")).not.toContainText("Fizz");
+  await expect(page.getByTestId("chat-title")).not.toContainText("Vertex");
 });
 
 test("closes direct message results while opening", async ({ page }) => {
