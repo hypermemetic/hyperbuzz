@@ -277,7 +277,7 @@ impl SetupPayload {
                 "Open Edit Agent in the Buzz app for the Buzz-managed fields; fix the external CLI config files manually and restart the agent.".to_string()
             } else {
                 // All Buzz-managed — original footer unchanged.
-                "Open Edit Agent in the Buzz app to set these.".to_string()
+                "Open Edit Agent in the Hyperbuzz app to set these.".to_string()
             };
 
             format!(
@@ -884,7 +884,7 @@ mod tests {
         };
         let body = payload.nudge_body();
         assert!(
-            body.contains("Open Edit Agent in the Buzz app to set these."),
+            body.contains("Open Edit Agent in the Hyperbuzz app to set these."),
             "all-managed nudge must use the original Edit Agent footer; got: {body:?}"
         );
     }

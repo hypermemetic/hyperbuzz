@@ -64,7 +64,7 @@ class App extends HookConsumerWidget {
     });
 
     return MaterialApp(
-      title: 'Buzz',
+      title: 'Hyperbuzz',
       theme: AppTheme.light(colorScheme: lightScheme),
       darkTheme: AppTheme.dark(colorScheme: darkScheme),
       themeMode: effectiveMode,

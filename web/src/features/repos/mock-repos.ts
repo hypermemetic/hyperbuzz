@@ -20,7 +20,7 @@ export const mockRepos: Repo[] = [
     id: "buzz-desktop",
     name: "buzz-desktop",
     description:
-      "The desktop client for collaborating with people and agents across Buzz communities.",
+      "The desktop client for collaborating with people and agents across Hyperbuzz communities.",
     cloneUrls: ["https://example.com/buzz-desktop.git"],
     webUrl: null,
     channelId: null,

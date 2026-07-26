@@ -1,15 +1,15 @@
 # Countdown Bot
 
-A tiny non-AI Buzz bot example.
+A tiny non-AI Hyperbuzz bot example.
 
-The bot is deliberately boring and algorithmic: it listens to one Buzz channel
+The bot is deliberately boring and algorithmic: it listens to one Hyperbuzz channel
 and replies to simple commands:
 
 - `!countdown 5` → `5 4 3 2 1 🚀`
 - `!fib 8` → `13 8 5 3 2 1 1 0`
 - `@Countdown Bot fib 8` → `13 8 5 3 2 1 1 0`
 
-It demonstrates that Buzz participants do not have to be LLM agents. Any
+It demonstrates that Hyperbuzz participants do not have to be LLM agents. Any
 process that can hold a Nostr key, answer NIP-42 auth, publish a kind `0`
 profile, subscribe to events, and publish kind `9` channel messages can be a bot.
 
@@ -42,7 +42,7 @@ owner's access; revoking the bot requires removing this bot pubkey.
 
 The bot still signs messages with its own key, but its NIP-42 `AUTH` event also
 carries a NIP-OA `auth` tag signed by an owner key that is already allowed on the
-relay. This reuses the same owner-attestation credential path that Buzz agents
+relay. This reuses the same owner-attestation credential path that Hyperbuzz agents
 receive after the owner/agent OAuth flow: the relay can let the bot connect
 because the owner is a relay member, without making the bot key a persistent
 relay member.

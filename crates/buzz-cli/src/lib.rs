@@ -10,7 +10,7 @@ use error::CliError;
 use nostr::Keys;
 use uuid::Uuid;
 
-/// Run the Buzz CLI from raw arguments (including `argv[0]`).
+/// Run the Hyperbuzz CLI from raw arguments (including `argv[0]`).
 ///
 /// Returns a process exit code (0 = success).
 ///
@@ -62,9 +62,9 @@ where
 #[derive(Parser)]
 #[command(
     name = "buzz",
-    about = "Buzz CLI — interact with a Buzz relay",
+    about = "Hyperbuzz CLI — interact with a Hyperbuzz relay",
     long_about = "\
-Buzz CLI — interact with a Buzz relay
+Hyperbuzz CLI — interact with a Hyperbuzz relay
 
 Configuration (flags override env vars):
   BUZZ_RELAY_URL     Relay base URL        [default: http://localhost:3000]
@@ -258,7 +258,7 @@ impl RespondToArg {
 
 #[derive(Subcommand)]
 pub enum AgentsCmd {
-    /// Open a prefilled create-agent form in the owner's Buzz Desktop
+    /// Open a prefilled create-agent form in the owner's Hyperbuzz Desktop
     DraftCreate {
         /// Current channel UUID; the new agent is added here after save
         #[arg(long)]
@@ -270,7 +270,7 @@ pub enum AgentsCmd {
         #[arg(long)]
         system_prompt: String,
     },
-    /// Open a prefilled edit-agent form in the owner's Buzz Desktop
+    /// Open a prefilled edit-agent form in the owner's Hyperbuzz Desktop
     DraftUpdate {
         /// Current channel UUID
         #[arg(long)]

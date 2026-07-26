@@ -385,9 +385,9 @@ mod tests {
     }
 
     #[test]
-    fn build_advertises_buzz_repository_url() {
+    fn build_advertises_hyperbuzz_repository_url() {
         let info = RelayInfo::build(None, None, false, DEFAULT_MAX_FRAME_BYTES, None);
-        assert_eq!(info.software, "https://github.com/block/buzz");
+        assert_eq!(info.software, "https://github.com/hypermemetic/hyperbuzz");
     }
 
     #[test]
