@@ -5,8 +5,10 @@ import { resetRateLimitGate } from "@/shared/api/relayRateLimitGate";
 import {
   applyCommunity,
   autoConnectDefaultRelayEnabled,
+  getDefaultInviteCode,
   getDefaultRelayUrl,
 } from "@/shared/api/tauri";
+import { claimInvite } from "@/shared/api/invites";
 import { getIdentity } from "@/shared/api/tauriIdentity";
 import { getOverrides } from "@/shared/features";
 import { resetMediaCaches } from "@/shared/lib/mediaUrl";
@@ -127,6 +129,22 @@ export function useCommunityInit(
           ) {
             const identity = await getIdentity();
             if (cancelled) return;
+
+            // hyperbuzz: a distributed build may bake an invite code so the
+            // freshly generated identity is admitted to a membership-gated
+            // default relay with no manual step. Best-effort — an open relay
+            // returns no code, and an expired/used code must not block boot
+            // (the relay simply rejects the connection later if truly gated).
+            const inviteCode = await getDefaultInviteCode();
+            if (inviteCode && !cancelled) {
+              try {
+                await claimInvite(defaultRelayUrl, inviteCode);
+              } catch {
+                // Already a member, expired, or open relay — proceed anyway.
+              }
+              if (cancelled) return;
+            }
+
             const community = initFirstCommunity(
               defaultRelayUrl,
               identity.pubkey,

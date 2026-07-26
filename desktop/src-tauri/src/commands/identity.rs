@@ -59,6 +59,20 @@ pub fn auto_connect_default_relay_enabled() -> bool {
     option_env!("BUZZ_DESKTOP_BUILD_AUTO_CONNECT_DEFAULT_RELAY").is_some()
 }
 
+/// hyperbuzz: build-time invite code baked into a distributed build. When the
+/// app auto-connects to the default relay, the frontend best-effort-redeems
+/// this so the freshly generated identity is admitted to a membership-gated
+/// relay without any manual step. Empty when the default relay is open
+/// (`BUZZ_REQUIRE_RELAY_MEMBERSHIP=false`), where redeeming is unnecessary.
+/// Set via desktop/src-tauri/.cargo/config.toml (`BUZZ_DESKTOP_BUILD_INVITE_CODE`).
+#[tauri::command]
+pub fn get_default_invite_code() -> Option<String> {
+    option_env!("BUZZ_DESKTOP_BUILD_INVITE_CODE")
+        .map(str::trim)
+        .filter(|code| !code.is_empty())
+        .map(str::to_string)
+}
+
 #[cfg(test)]
 mod auto_connect_default_relay_tests {
     use super::auto_connect_default_relay_enabled;

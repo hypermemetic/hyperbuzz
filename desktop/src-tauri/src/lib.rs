@@ -693,6 +693,7 @@ pub fn run() {
             get_os_idle_seconds,
             get_default_relay_url,
             auto_connect_default_relay_enabled,
+            get_default_invite_code,
             get_legacy_workspace_storage,
             is_shared_identity,
             get_relay_ws_url,

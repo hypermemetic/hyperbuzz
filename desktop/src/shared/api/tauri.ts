@@ -363,6 +363,13 @@ export function autoConnectDefaultRelayEnabled(): Promise<boolean> {
   return invokeTauri<boolean>("auto_connect_default_relay_enabled");
 }
 
+/** hyperbuzz: build-time invite code baked into a distributed build, or null
+ * when unset (open relay). Redeemed on first auto-connect so a generated
+ * identity is admitted to a membership-gated relay with no manual step. */
+export function getDefaultInviteCode(): Promise<string | null> {
+  return invokeTauri<string | null>("get_default_invite_code");
+}
+
 export function isSharedIdentity(): Promise<boolean> {
   return invokeTauri<boolean>("is_shared_identity");
 }

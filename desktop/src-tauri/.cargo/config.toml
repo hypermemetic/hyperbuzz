@@ -9,3 +9,8 @@
 [env]
 BUZZ_DESKTOP_BUILD_RELAY_URL = "wss://buzz.menger.sh"
 BUZZ_DESKTOP_BUILD_AUTO_CONNECT_DEFAULT_RELAY = "1"
+# Baked invite code, redeemed on first auto-connect so a generated identity is
+# admitted to a membership-gated relay. Empty today because buzz.menger.sh runs
+# open (BUZZ_REQUIRE_RELAY_MEMBERSHIP=false). To switch to invite-gated: mint a
+# code (≤30-day TTL), paste it here, and rebuild.
+BUZZ_DESKTOP_BUILD_INVITE_CODE = ""
