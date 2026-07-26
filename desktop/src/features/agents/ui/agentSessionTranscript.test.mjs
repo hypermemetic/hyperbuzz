@@ -1719,7 +1719,7 @@ test("buildTranscript five-section system prompt card is standalone with all sec
   //   (b) The standalone item must carry all five sections in order:
   //       Base → System → Team Instructions → Core Memory → Channel Canvas.
   //   (c) The prompt segment's context (CheckCheck dialog) must contain only
-  //       the session/prompt:context sections (Buzz event + Thread context),
+  //       the session/prompt:context sections (Hyperbuzz event + Thread context),
   //       never the system-prompt sections.
   const CH = "44444444-4444-4444-4444-444444444444";
   const events = [
@@ -1862,10 +1862,10 @@ test("buildTranscript five-section system prompt card is standalone with all sec
   const contextSectionTitles = (promptContextItem.sections ?? []).map(
     (s) => s.title,
   );
-  // Must have Buzz event and Thread context sections, NOT Base/System/Team Instructions/Core Memory/Channel Canvas.
+  // Must have Hyperbuzz event and Thread context sections, NOT Base/System/Team Instructions/Core Memory/Channel Canvas.
   assert.ok(
     contextSectionTitles.some((t) => t.toLowerCase().includes("buzz")),
-    "prompt context must contain a Buzz event section",
+    "prompt context must contain a Hyperbuzz event section",
   );
   assert.ok(
     !contextSectionTitles.some(

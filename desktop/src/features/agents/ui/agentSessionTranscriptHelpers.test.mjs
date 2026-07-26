@@ -26,8 +26,8 @@ test("parsePromptText returns the empty/Prompt fallback for whitespace-only inpu
 
 test("parsePromptText wraps header-less free text in a single Prompt section", () => {
   // Free text with no `[header]` becomes one "Prompt" section. Since no
-  // section is a "Buzz event", there is no event content to surface, so
-  // userText is empty and the title falls through to "Buzz event".
+  // section is a "Hyperbuzz event", there is no event content to surface, so
+  // userText is empty and the title falls through to "Hyperbuzz event".
   const result = parsePromptText("just some free text");
   assert.deepEqual(
     result.sections.map((s) => s.title),
@@ -35,7 +35,7 @@ test("parsePromptText wraps header-less free text in a single Prompt section", (
   );
   assert.equal(result.sections[0].body, "just some free text");
   assert.equal(result.userText, "");
-  assert.equal(result.userTitle, "Buzz event");
+  assert.equal(result.userTitle, "Hyperbuzz event");
   assert.equal(result.userPubkey, null);
   assert.equal(result.userEventId, null);
 });
@@ -121,10 +121,10 @@ test("parsePromptText yields a null pubkey when From has no hex", () => {
   assert.equal(result.userTitle, "Note");
 });
 
-test("parsePromptText defaults the title to 'Buzz event' when no kind is present", () => {
+test("parsePromptText defaults the title to 'Hyperbuzz event' when no kind is present", () => {
   const text = ["[Buzz event]", "Content: x"].join("\n");
   const result = parsePromptText(text);
-  assert.equal(result.userTitle, "Buzz event");
+  assert.equal(result.userTitle, "Hyperbuzz event");
 });
 
 test("parsePromptText leading text before a header becomes a Prompt section", () => {
@@ -536,7 +536,7 @@ test("parseSystemPromptSections extracts Team Instructions with Core Memory and 
   // compose_prompt() produces the canonical delimiter; with_core() and with_canvas() append their frames.
   const framed = [
     "[Base]",
-    "You are a helpful AI assistant running in Buzz.",
+    "You are a helpful AI assistant running in Hyperbuzz.",
     "",
     "[System]",
     "You are Observer Agent. You coordinate multi-agent workflows.",
@@ -558,7 +558,10 @@ test("parseSystemPromptSections extracts Team Instructions with Core Memory and 
   ].join("\n");
   const sections = parseSystemPromptSections(framed);
   assert.deepEqual(sections, [
-    { title: "Base", body: "You are a helpful AI assistant running in Buzz." },
+    {
+      title: "Base",
+      body: "You are a helpful AI assistant running in Hyperbuzz.",
+    },
     {
       title: "System",
       body: "You are Observer Agent. You coordinate multi-agent workflows.",

@@ -93,7 +93,7 @@ export function HtmlLiveBlock({
       const iframe = iframeRef.current;
       if (!iframe || event.source !== iframe.contentWindow) return;
       const data = event.data;
-      if (!data || data.__buzzFetch !== true) return;
+      if (data?.__buzzFetch !== true) return;
       const reply = (payload: Record<string, unknown>) => {
         iframe.contentWindow?.postMessage(
           { __buzzFetchResult: true, id: data.id, ...payload },

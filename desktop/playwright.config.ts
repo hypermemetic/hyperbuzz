@@ -56,6 +56,7 @@ export default defineConfig({
         "**/video-attachment.spec.ts",
         "**/spoiler.spec.ts",
         "**/hyperbuzz-features.spec.ts",
+        "**/dm-crash-diagnostic.spec.ts",
         "**/composer-link-shortcut.spec.ts",
         "**/composer-tooltip-dismiss.spec.ts",
         "**/mentions.spec.ts",

@@ -7,11 +7,11 @@ import {
   persistCurrentIdentity,
 } from "@/shared/api/tauriIdentity";
 import { Button } from "@/shared/ui/button";
+import { BuzzMark } from "@/shared/ui/buzz-logo/BuzzMark";
 import { StartupWindowDragRegion } from "@/shared/ui/StartupWindowDragRegion";
 import { BackupStep } from "./BackupStep";
 import { DefaultConfigStep } from "./DefaultConfigStep";
 import { IdentityKeyHelpDialog } from "./IdentityKeyHelpDialog";
-import { LandingBees } from "./LandingBees";
 import { NostrKeyImportForm } from "./NostrKeyImportForm";
 import {
   ONBOARDING_LANDING_CTA_CLASS,
@@ -119,7 +119,6 @@ export function MachineOnboardingFlow({
       data-testid="machine-onboarding-gate"
     >
       <StartupWindowDragRegion />
-      {page === "identity" ? <LandingBees /> : null}
       {page !== "identity" ? (
         <OnboardingChrome
           current={page === "config" ? 4 : page === "setup" ? 3 : 2}
@@ -138,12 +137,13 @@ export function MachineOnboardingFlow({
               effect="mask-reveal-up"
               transitionKey="machine-identity"
             >
-              <img
-                alt="Buzz"
-                className="w-full max-w-[600px]"
-                src="/landing/buzz-wordmark.png"
-              />
-              <p className="mt-2 max-w-[560px] text-center text-2xl font-normal leading-none text-foreground">
+              <div className="flex items-center gap-4 text-primary">
+                <BuzzMark className="h-16 w-16" />
+                <span className="text-6xl font-semibold tracking-tight text-foreground">
+                  Hyperbuzz
+                </span>
+              </div>
+              <p className="mt-4 max-w-[560px] text-center text-2xl font-normal leading-none text-foreground">
                 Your people, your agents, your projects —<br />
                 all in one place.
               </p>
@@ -187,7 +187,7 @@ export function MachineOnboardingFlow({
                 <p className="mt-5 max-w-[440px] text-sm leading-6 text-foreground/80">
                   {identityLost
                     ? "Your identity is no longer in the system keyring. Re-import your nsec to restore it."
-                    : "If you already have a Buzz account, enter your private key below to get started."}
+                    : "If you already have a Hyperbuzz account, enter your private key below to get started."}
                 </p>
               </div>
               <div className="buzz-onboarding-key-import-position w-full">
