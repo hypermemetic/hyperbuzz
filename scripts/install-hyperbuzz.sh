@@ -18,11 +18,13 @@ cd "$REPO_ROOT"
 # Activate the repo toolchain (Rust/Node via hermit) if present.
 [ -f ./bin/activate-hermit ] && . ./bin/activate-hermit >/dev/null 2>&1 || true
 
+# The desktop crate is excluded from the root workspace, so it bundles under
+# desktop/src-tauri/target, not the repo-root target.
 MODE="--debug"
-BUNDLE_DIR="target/debug/bundle/macos"
+BUNDLE_DIR="desktop/src-tauri/target/debug/bundle/macos"
 if [[ "${1:-}" == "--release" ]]; then
   MODE=""
-  BUNDLE_DIR="target/release/bundle/macos"
+  BUNDLE_DIR="desktop/src-tauri/target/release/bundle/macos"
 fi
 
 # externalBin sidecars must exist for the bundle. Reuse debug builds if present.
