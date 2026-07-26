@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "Buzz",
+  "productName": "Hyperbuzz",
   "version": "0.4.24",
-  "identifier": "xyz.block.buzz.app",
+  "identifier": "sh.menger.hyperbuzz.app",
   "build": {
     "beforeDevCommand": {
       "script": "exec ./node_modules/.bin/vite",
