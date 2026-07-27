@@ -424,9 +424,11 @@ function ThemeSettingsCard() {
     setFollowSystem,
   } = useTheme();
 
-  // Hyperbuzz themes pin a neutral accent (GitHub black in light, white in dark),
-  // so the accent picker is hidden while a Hyperbuzz theme is active. `themeName` is
-  // the effective theme, so this also covers System mode resolving to Hyperbuzz.
+  // Hyperbuzz themes pin the brand's own gold accent (the rose-window
+  // `--primary`/`--accent` tokens in theme.css), so the accent picker is
+  // hidden while a Hyperbuzz theme is active — there's no user-selectable
+  // swatch to show. `themeName` is the effective theme, so this also covers
+  // System mode resolving to Hyperbuzz.
   const accentPickerHidden = isBuzzTheme(themeName);
   const shouldReduceMotion = useReducedMotion();
 
@@ -617,7 +619,7 @@ function ThemeSettingsCard() {
         </div>
       </div>
 
-      {/* Accent color picker — hidden for Hyperbuzz themes (pinned neutral accent).
+      {/* Accent color picker — hidden for Hyperbuzz themes (pinned gold brand accent).
           Reveal/hide with the translate-up + opacity fade defined by
           ACCENT_PICKER_TRANSITION above. Reduced motion skips the transition
           and just renders/unrenders. */}

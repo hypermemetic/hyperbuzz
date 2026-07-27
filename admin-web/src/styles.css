@@ -1,8 +1,8 @@
 :root {
   font-family:
     "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
-  color: #231e1e;
-  background: #d7e7f6;
+  color: #152133;
+  background: #f9f6f1;
   font-synthesis: none;
 }
 
@@ -30,7 +30,7 @@ select {
 
 button {
   color: white;
-  background: #231e1e;
+  background: #152133;
   border: 0;
   border-radius: 999px;
   padding: 0.75rem 1.25rem;
@@ -39,7 +39,7 @@ button {
 
 .app {
   min-height: 100vh;
-  background: linear-gradient(180deg, #d7d72e 0%, #dfe379 24%, #d7e7f6 78%);
+  background: linear-gradient(180deg, #efe6d5 0%, #cdd6de 100%);
 }
 
 .app-header {
@@ -63,7 +63,7 @@ button {
 
 .brand b {
   font-weight: 400;
-  color: rgb(35 30 30 / 60%);
+  color: rgb(21 33 51 / 60%);
 }
 
 .brand-mark {
@@ -72,8 +72,8 @@ button {
   display: grid;
   place-items: center;
   border-radius: 0.7rem;
-  color: #d7d72e;
-  background: #231e1e;
+  color: #d8ac6e;
+  background: #152133;
 }
 
 .brand-mark svg {
@@ -86,7 +86,7 @@ nav {
   align-items: center;
   gap: 0.35rem;
   padding: 0.3rem;
-  border: 1px solid rgb(35 30 30 / 10%);
+  border: 1px solid rgb(21 33 51 / 10%);
   border-radius: 999px;
   background: rgb(255 255 255 / 42%);
   backdrop-filter: blur(12px);
@@ -98,7 +98,7 @@ nav {
   gap: 0.5rem;
   padding: 0.65rem 1rem;
   border-radius: 999px;
-  color: rgb(35 30 30 / 60%);
+  color: rgb(21 33 51 / 60%);
   font-size: 0.9rem;
   letter-spacing: -0.035em;
   transition:
@@ -117,13 +117,13 @@ nav {
 }
 
 .nav-link:hover {
-  color: #231e1e;
+  color: #915827;
 }
 
 .nav-link[aria-current="page"] {
-  color: #231e1e;
+  color: #915827;
   background: white;
-  box-shadow: 0 0.2rem 1rem rgb(35 30 30 / 8%);
+  box-shadow: 0 0.2rem 1rem rgb(21 33 51 / 8%);
 }
 
 main {
@@ -139,7 +139,7 @@ main {
 
 .page-title > p {
   margin: 0 0 1rem;
-  color: rgb(35 30 30 / 55%);
+  color: rgb(21 33 51 / 55%);
   font-size: 0.78rem;
   font-weight: 500;
   letter-spacing: 0.12em;
@@ -157,7 +157,7 @@ h1 {
 .page-title > span {
   display: block;
   margin-top: 1.5rem;
-  color: rgb(35 30 30 / 62%);
+  color: rgb(21 33 51 / 62%);
   font-size: 1.05rem;
   line-height: 1.5;
   letter-spacing: -0.035em;
@@ -169,7 +169,7 @@ h1 {
   align-items: center;
   gap: 0.35rem;
   margin-bottom: 2.25rem;
-  color: rgb(35 30 30 / 62%);
+  color: rgb(21 33 51 / 62%);
   font-size: 0.9rem;
   letter-spacing: -0.035em;
 }
@@ -186,7 +186,7 @@ h1 {
   align-items: end;
   margin-bottom: 0.75rem;
   padding: 1rem;
-  border: 1px solid rgb(35 30 30 / 10%);
+  border: 1px solid rgb(21 33 51 / 10%);
   border-radius: 1.25rem;
   background: rgb(255 255 255 / 45%);
   backdrop-filter: blur(12px);
@@ -198,7 +198,7 @@ h1 {
 }
 
 .feedback-filters label > span {
-  color: rgb(35 30 30 / 48%);
+  color: rgb(21 33 51 / 48%);
   font-size: 0.7rem;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -207,17 +207,17 @@ h1 {
 .feedback-filters input,
 .feedback-filters select {
   min-height: 2.75rem;
-  border: 1px solid rgb(35 30 30 / 12%);
+  border: 1px solid rgb(21 33 51 / 12%);
   border-radius: 999px;
   outline: none;
-  color: #231e1e;
+  color: #152133;
   background: white;
 }
 
 .feedback-filters input:focus,
 .feedback-filters select:focus {
-  border-color: #231e1e;
-  box-shadow: 0 0 0 3px rgb(35 30 30 / 10%);
+  border-color: #915827;
+  box-shadow: 0 0 0 3px rgb(145 88 39 / 18%);
 }
 
 .feedback-filters select {
@@ -242,14 +242,14 @@ h1 {
   height: 1rem;
   transform: translateY(-50%);
   fill: none;
-  stroke: rgb(35 30 30 / 45%);
+  stroke: rgb(21 33 51 / 45%);
   stroke-width: 1.7;
   stroke-linecap: round;
 }
 
 .result-count {
   margin: 0 0 0.75rem;
-  color: rgb(35 30 30 / 48%);
+  color: rgb(21 33 51 / 48%);
   font-size: 0.78rem;
 }
 
@@ -263,7 +263,7 @@ h1 {
 .state {
   background: white;
   border-radius: 1.6rem;
-  box-shadow: 0 1rem 4rem rgb(35 30 30 / 6%);
+  box-shadow: 0 1rem 4rem rgb(21 33 51 / 6%);
 }
 
 .record-card {
@@ -299,7 +299,7 @@ h1 {
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  color: rgb(35 30 30 / 62%);
+  color: rgb(21 33 51 / 62%);
   font-size: 0.78rem;
   cursor: pointer;
 }
@@ -308,7 +308,7 @@ h1 {
   width: 1rem;
   height: 1rem;
   margin: 0;
-  accent-color: #231e1e;
+  accent-color: #915827;
 }
 
 .record-open-link {
@@ -316,12 +316,12 @@ h1 {
   place-items: center;
   padding: 0.5rem;
   border-radius: 999px;
-  color: rgb(35 30 30 / 30%);
+  color: rgb(21 33 51 / 30%);
 }
 
 .card-link:hover .record-card {
   transform: translateY(-2px);
-  box-shadow: 0 1.4rem 4.5rem rgb(35 30 30 / 12%);
+  box-shadow: 0 1.4rem 4.5rem rgb(21 33 51 / 12%);
 }
 
 .record-icon {
@@ -330,15 +330,16 @@ h1 {
   display: grid;
   place-items: center;
   border-radius: 999px;
-  color: #231e1e;
+  color: #152133;
 }
 
 .report-icon {
-  background: #d7d72e;
+  color: #fbf8f4;
+  background: #915827;
 }
 
 .feedback-icon {
-  background: #d7e7f6;
+  background: #eeeae2;
 }
 
 .record-icon svg {
@@ -363,9 +364,9 @@ h1 {
   display: inline-flex;
   align-items: center;
   border-radius: 999px;
-  background: #f2f2ed;
+  background: #eeeae2;
   padding: 0.25rem 0.55rem;
-  color: rgb(35 30 30 / 65%);
+  color: rgb(21 33 51 / 65%);
   font-size: 0.7rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -388,7 +389,7 @@ h1 {
 .record-primary strong {
   max-width: 42rem;
   overflow: hidden;
-  color: #231e1e;
+  color: #152133;
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.35;
@@ -410,12 +411,12 @@ h1 {
   display: flex;
   align-items: center;
   gap: 0.65rem;
-  color: rgb(35 30 30 / 55%);
+  color: rgb(21 33 51 / 55%);
   font-size: 0.78rem;
 }
 
 code {
-  color: rgb(35 30 30 / 50%);
+  color: rgb(21 33 51 / 50%);
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 0.75rem;
   word-break: break-all;
@@ -423,20 +424,20 @@ code {
 
 .record-provenance code {
   padding-left: 0.65rem;
-  border-left: 1px solid rgb(35 30 30 / 14%);
+  border-left: 1px solid rgb(21 33 51 / 14%);
 }
 
 .record-date {
   display: grid;
   justify-items: end;
   gap: 0.3rem;
-  color: rgb(35 30 30 / 48%);
+  color: rgb(21 33 51 / 48%);
   font-size: 0.78rem;
   letter-spacing: -0.025em;
 }
 
 .record-date span {
-  color: rgb(35 30 30 / 32%);
+  color: rgb(21 33 51 / 32%);
   font-size: 0.68rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -457,7 +458,7 @@ code {
 }
 
 .record-card > .arrow-icon {
-  color: rgb(35 30 30 / 30%);
+  color: rgb(21 33 51 / 30%);
 }
 
 .detail {
@@ -469,7 +470,7 @@ code {
   align-items: center;
   gap: 1rem;
   padding-bottom: 2rem;
-  border-bottom: 1px solid rgb(35 30 30 / 9%);
+  border-bottom: 1px solid rgb(21 33 51 / 9%);
 }
 
 .detail-heading h2 {
@@ -487,7 +488,7 @@ dl {
 }
 
 dt {
-  color: rgb(35 30 30 / 48%);
+  color: rgb(21 33 51 / 48%);
   font-size: 0.82rem;
 }
 
@@ -497,9 +498,9 @@ dd {
 }
 
 .sensitive {
-  border-left: 3px solid #d7d72e;
+  border-left: 3px solid #915827;
   border-radius: 0 0.8rem 0.8rem 0;
-  background: #f6f6f1;
+  background: #eeeae2;
   padding: 1rem;
   line-height: 1.5;
 }
@@ -519,9 +520,9 @@ dd {
 .image-attachment {
   overflow: hidden;
   margin: 0;
-  border: 1px solid rgb(35 30 30 / 10%);
+  border: 1px solid rgb(21 33 51 / 10%);
   border-radius: 1rem;
-  background: #f6f6f1;
+  background: #eeeae2;
 }
 
 .image-attachment a {
@@ -533,7 +534,7 @@ dd {
   max-height: 32rem;
   display: block;
   object-fit: contain;
-  background: rgb(35 30 30 / 4%);
+  background: rgb(21 33 51 / 4%);
 }
 
 .image-attachment figcaption,
@@ -565,15 +566,15 @@ dd {
 
 .image-attachment small,
 .file-attachment small {
-  color: rgb(35 30 30 / 48%);
+  color: rgb(21 33 51 / 48%);
   font-size: 0.7rem;
 }
 
 .file-attachment {
   align-self: start;
-  border: 1px solid rgb(35 30 30 / 10%);
+  border: 1px solid rgb(21 33 51 / 10%);
   border-radius: 1rem;
-  background: #f6f6f1;
+  background: #eeeae2;
 }
 
 .file-attachment:hover strong {
@@ -615,14 +616,14 @@ dd {
   place-content: center;
   justify-items: center;
   padding: 2rem;
-  color: rgb(35 30 30 / 56%);
+  color: rgb(21 33 51 / 56%);
   text-align: center;
   letter-spacing: -0.035em;
 }
 
 .state h2 {
   margin: 0;
-  color: #231e1e;
+  color: #152133;
   font-size: 1.4rem;
   font-weight: 400;
 }

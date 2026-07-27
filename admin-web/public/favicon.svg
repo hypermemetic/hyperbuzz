@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
   <style>
-    .mark { fill: #4c1d95; }
+    .mark { fill: #915827; }
     @media (prefers-color-scheme: dark) {
-      .mark { fill: #a78bfa; }
+      .mark { fill: #d8ac6e; }
     }
   </style>
   <g class="mark">

@@ -27,7 +27,10 @@ function createPersona(id, displayName, overrides = {}) {
 
 test("getCatalogPersonas keeps built-ins visible whether selected or not", () => {
   const personas = [
-    createPersona("builtin:fizz", "Vertex", { isBuiltIn: true, isActive: false }),
+    createPersona("builtin:fizz", "Vertex", {
+      isBuiltIn: true,
+      isActive: false,
+    }),
     createPersona("custom:builder", "Builder"),
   ];
 
@@ -39,7 +42,10 @@ test("getCatalogPersonas keeps built-ins visible whether selected or not", () =>
 
 test("getCatalogSelectionState keeps built-in selection rules in one place", () => {
   const personas = [
-    createPersona("builtin:fizz", "Vertex", { isBuiltIn: true, isActive: true }),
+    createPersona("builtin:fizz", "Vertex", {
+      isBuiltIn: true,
+      isActive: true,
+    }),
     createPersona("custom:builder", "Builder"),
   ];
 
@@ -61,14 +67,20 @@ test("getCatalogSelectionState keeps built-in selection rules in one place", () 
 
 test("getCatalogPersonas keeps chooser order stable when selection changes", () => {
   const inactive = [
-    createPersona("builtin:fizz", "Vertex", { isBuiltIn: true, isActive: false }),
+    createPersona("builtin:fizz", "Vertex", {
+      isBuiltIn: true,
+      isActive: false,
+    }),
     createPersona("builtin:reviewer", "Reviewer", {
       isBuiltIn: true,
       isActive: true,
     }),
   ];
   const active = [
-    createPersona("builtin:fizz", "Vertex", { isBuiltIn: true, isActive: true }),
+    createPersona("builtin:fizz", "Vertex", {
+      isBuiltIn: true,
+      isActive: true,
+    }),
     createPersona("builtin:reviewer", "Reviewer", {
       isBuiltIn: true,
       isActive: false,
@@ -108,7 +120,10 @@ test("isCatalogPersonaSelected treats active catalog personas as selected", () =
 
 test("getPersonaLabelsById keeps every returned persona addressable", () => {
   const personas = [
-    createPersona("builtin:fizz", "Vertex", { isBuiltIn: true, isActive: false }),
+    createPersona("builtin:fizz", "Vertex", {
+      isBuiltIn: true,
+      isActive: false,
+    }),
     createPersona("custom:builder", "Builder"),
   ];
 
@@ -120,7 +135,10 @@ test("getPersonaLabelsById keeps every returned persona addressable", () => {
 
 test("getPersonaLibraryState keeps the working library and full catalog in one place", () => {
   const personas = [
-    createPersona("builtin:fizz", "Vertex", { isBuiltIn: true, isActive: true }),
+    createPersona("builtin:fizz", "Vertex", {
+      isBuiltIn: true,
+      isActive: true,
+    }),
     createPersona("custom:builder", "Builder"),
   ];
 

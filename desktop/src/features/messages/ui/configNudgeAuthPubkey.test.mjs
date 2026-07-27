@@ -52,7 +52,8 @@ function makeRelayEvent(tags) {
     {
       kind: 9,
       created_at: 1_700_000_000,
-      content: "**Vertex** needs configuration.\n\n```buzz:config-nudge\n{}\n```",
+      content:
+        "**Vertex** needs configuration.\n\n```buzz:config-nudge\n{}\n```",
       tags,
     },
     RELAY_SECRET,

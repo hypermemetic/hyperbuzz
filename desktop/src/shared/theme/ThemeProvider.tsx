@@ -25,6 +25,17 @@ export const THEME_STORAGE_KEY = "buzz-theme";
 const CACHE_KEY = "buzz-theme-cache";
 export const ACCENT_STORAGE_KEY = "buzz-accent-color";
 export const NEUTRAL_ACCENT = "neutral";
+/**
+ * Sentinel returned by {@link resolveEffectiveAccent} for themes that ship
+ * their own accent as part of the theme's CSS cascade — the Hyperbuzz
+ * `buzz` / `buzz-dark` themes define gold `--primary`/`--accent` tokens in
+ * `theme.css`, keyed off the `data-buzz-theme` attribute that
+ * {@link applyBuzzSidebar} sets on `:root`. `applyAccentColor` treats this
+ * value as "clear any inline accent override and let that cascade value
+ * win" rather than pinning a specific color here, so the gold tokens stay
+ * centralized in the CSS token layer instead of being duplicated in JS.
+ */
+export const THEME_ACCENT = "theme-accent";
 const FOLLOW_SYSTEM_KEY = "buzz-follow-system";
 const VIDEO_REVIEW_NEUTRAL_ACCENT = "0 0% 98%";
 const VIDEO_REVIEW_CHIP_SURFACE = "#161616";
@@ -170,8 +181,38 @@ function rgbToHex({ r, g, b }: Rgb): string {
     .join("")}`;
 }
 
+/**
+ * Every custom property {@link applyAccentColor} may set as an inline style
+ * on `:root`. Shared by the {@link THEME_ACCENT} branch so it can clear a
+ * prior accent selection's inline overrides and fall back to whatever the
+ * active theme's stylesheet cascade provides.
+ */
+const ACCENT_INLINE_PROPERTIES = [
+  "--buzz-selected-accent",
+  "--buzz-video-review-accent",
+  "--buzz-video-review-accent-foreground",
+  "--primary",
+  "--primary-foreground",
+  "--sidebar-primary",
+  "--sidebar-primary-foreground",
+  "--sidebar-active",
+  "--sidebar-active-foreground",
+] as const;
+
 function applyAccentColor(value: string) {
   const root = document.documentElement;
+  if (value === THEME_ACCENT) {
+    // Remove any inline accent override left by a prior theme/accent
+    // selection so the CSS cascade's own --primary/--accent (theme.css,
+    // keyed off data-buzz-theme) takes effect instead of a stale inline
+    // value. Inline styles beat stylesheet rules regardless of selector
+    // specificity, so this only works because applyBuzzSidebar has already
+    // set data-buzz-theme by the time this runs (see applyTheme/applyCachedVars).
+    for (const prop of ACCENT_INLINE_PROPERTIES) {
+      root.style.removeProperty(prop);
+    }
+    return;
+  }
   if (value === NEUTRAL_ACCENT) {
     const styles = window.getComputedStyle(root);
     const foreground = styles.getPropertyValue("--foreground").trim();
@@ -212,9 +253,10 @@ function applyAccentColor(value: string) {
 }
 
 /**
- * The Buzz themes ship with a fixed neutral accent (the GitHub black/white
- * foreground) rather than a user-selectable accent color. When a Buzz theme is
- * active we force `NEUTRAL_ACCENT` regardless of the stored preference, and the
+ * The Buzz (Hyperbuzz) themes ship with a fixed brand accent — the gold
+ * `--primary`/`--accent` tokens defined in `theme.css` — rather than a
+ * user-selectable accent color. When a Buzz theme is active we resolve to
+ * {@link THEME_ACCENT} regardless of the stored preference, and the
  * appearance panel hides the accent picker. The user's chosen accent is left
  * untouched in storage so it returns when they switch back to another theme.
  */
@@ -223,14 +265,15 @@ export function isBuzzTheme(themeName: string): boolean {
 }
 
 /**
- * Resolve the accent to actually apply for a theme: Buzz themes are pinned to
- * the neutral accent; every other theme uses the stored/selected accent.
+ * Resolve the accent to actually apply for a theme: Buzz themes resolve to
+ * {@link THEME_ACCENT} so their own gold cascade tokens win (see
+ * {@link isBuzzTheme}); every other theme uses the stored/selected accent.
  */
 function resolveEffectiveAccent(
   themeName: string,
   accentColor: string,
 ): string {
-  return isBuzzTheme(themeName) ? NEUTRAL_ACCENT : accentColor;
+  return isBuzzTheme(themeName) ? THEME_ACCENT : accentColor;
 }
 
 /**
@@ -411,9 +454,10 @@ function applyCachedVars(): string | null {
 
     const accent =
       window.localStorage.getItem(ACCENT_STORAGE_KEY) ?? DEFAULT_ACCENT;
-    // Pin Buzz themes to the neutral accent here too, matching applyTheme.
-    // Otherwise a cached Buzz theme + non-neutral stored accent flashes the
-    // old accent on reload until the async applyTheme effect runs.
+    // Resolve Buzz themes to THEME_ACCENT here too, matching applyTheme.
+    // Otherwise a cached Buzz theme + a stored user accent flashes that old
+    // accent color over the gold cascade on reload until the async
+    // applyTheme effect runs.
     applyAccentColor(resolveEffectiveAccent(themeName, accent));
 
     return themeName;
@@ -459,7 +503,8 @@ async function applyTheme(
   // browser paints the new theme + accent together. Doing this in a later
   // microtask (e.g. the caller's `.then`) let the previous accent flash on the
   // new theme for a frame — the flicker seen when switching to Buzz. Buzz
-  // themes resolve to the neutral accent regardless of the stored value.
+  // themes resolve to THEME_ACCENT regardless of the stored value, which
+  // clears any inline override so their own gold cascade tokens win.
   applyAccentColor(
     resolveEffectiveAccent(
       name,
@@ -588,7 +633,7 @@ export function ThemeProvider({
   }, [followSystem]);
 
   // Re-apply the accent when the user picks a new swatch or the effective theme
-  // changes. applyTheme already applies the (Buzz-neutral-aware) accent in the
+  // changes. applyTheme already applies the (Buzz-aware) accent in the
   // same synchronous batch as the theme vars — the flicker fix — so this effect
   // is idempotent on theme changes and simply covers accent-only changes.
   useEffect(() => {
