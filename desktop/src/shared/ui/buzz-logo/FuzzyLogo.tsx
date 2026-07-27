@@ -1,10 +1,9 @@
 import { cn } from "@/shared/lib/cn";
-import BuzzLogoAnimation, {
-  type BuzzLogoAnimationProps,
-} from "./BuzzLogoAnimation";
+
+import { BuzzMark } from "./BuzzMark";
 
 export type FuzzyLogoProps = {
-  /** When false, skips the looping feTurbulence texture filter and uses a CSS pulse instead. */
+  /** Retained for API compatibility; the Menger mark has no turbulence filter. */
   fuzz?: boolean;
   className?: string;
   ariaLabel?: string;
@@ -14,42 +13,43 @@ export type FuzzyLogoProps = {
   /** Set false when a parent drives its own opacity animation over the mark. */
   pulse?: boolean;
   reverse?: boolean;
-  variant?: BuzzLogoAnimationProps["variant"];
+  variant?: string;
 };
 
 /**
- * The fuzzy Buzz mark. v8 ships a built-in animated texture (looping fractal-noise
- * turbulence + grain) applied via an SVG filter. Set `fuzz={false}` to render the
- * crisp geometry with a lightweight CSS pulse — recommended for long-lived mounts.
+ * The animated Hyperbuzz mark. Upstream morphed a bee silhouette through a
+ * keyframed SVG animation; Hyperbuzz renders the static Menger-carpet mark
+ * with a lightweight CSS pulse instead — cheaper, and it paints correctly on
+ * the first frame during cold boot.
+ *
+ * The full prop surface is kept so existing call sites (boot splash, agent
+ * turn-liveness indicator, transcript list) need no changes; `fuzz`, `reverse`
+ * and `variant` are now inert.
  */
 export function FuzzyLogo({
-  fuzz = true,
   className,
   ariaLabel = "Hyperbuzz logo",
   loop = false,
   loopRestSeconds = 0,
   pulse = true,
-  reverse = false,
-  variant = "v8",
 }: FuzzyLogoProps) {
-  // The rest-window loop already reads as "alive"; skip the pulse so the two
+  // A rest-window loop already reads as "alive"; skip the pulse so the two
   // opacity animations don't fight.
   const hasRestWindow = loop && loopRestSeconds > 0;
 
   return (
-    <BuzzLogoAnimation
-      ariaLabel={ariaLabel}
+    <span
+      aria-label={ariaLabel}
       className={cn(
-        pulse && !fuzz && !hasRestWindow && "buzz-logo--pulse",
+        "block",
+        pulse && !hasRestWindow && "buzz-logo--pulse",
         className,
       )}
-      fullScreen={false}
-      loop={loop}
-      loopRestSeconds={loopRestSeconds}
-      reverse={reverse}
-      showBackground={false}
-      textured={fuzz}
-      variant={variant}
-    />
+      role="img"
+    >
+      <BuzzMark className="block h-auto w-full" />
+    </span>
   );
 }
+
+export default FuzzyLogo;
